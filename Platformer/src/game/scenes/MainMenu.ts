@@ -21,9 +21,9 @@ export class MainMenu extends Scene
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-        this.input.once('pointerdown', () => {
+        this.title.once('pointerdown', () => {
 
             this.scene.start('Game');
 
