@@ -15,6 +15,16 @@ export class Preloader extends Scene
         //  A simple progress bar. This is the outline of the bar.
         this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
 
+        for (let i = 1; i <= 10; i++)
+        {
+            this.load.image(`dino-idle-${i}`, `player/dino/idle/Idle (${i}).png`);
+            this.load.image(`dino-run-${i}`, `player/dino/run/Run (${i}).png`);
+            this.load.image(`dino-walk-${i}`, `player/dino/walk/Walk (${i}).png`);
+            this.load.image(`dino-jump-${i}`, `player/dino/jump/Jump (${i}).png`);
+            this.load.image(`dino-dead-${i}`, `player/dino/dead/Dead (${i}).png`);
+        }
+
+
         //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
         const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
 
