@@ -8,7 +8,7 @@ export function createLevel1(scene: Scene)
     const worldHeight = height * 2;
 
     scene.physics.world.setBounds(0, 0, worldWidth, worldHeight);
-    //scene.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
+    scene.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
 
     for (let x = width / 2; x < worldWidth; x += width)
     {
@@ -19,29 +19,49 @@ export function createLevel1(scene: Scene)
 
     const platforms = scene.physics.add.staticGroup();
 
-    createPlatform(scene, platforms, 0, worldHeight - 40, 200000, 80);
-    //createPlatform(scene, platforms, 1600, worldHeight - 300, 500, 80);
-    //createPlatform(scene, platforms, 2600, worldHeight - 500, 500, 80);
+    createTilePlatform(scene, platforms, 0, worldHeight - 80, 10);
 
     return {
         platforms,
         worldWidth,
         worldHeight,
         spawnX: 150,
-        spawnY: worldHeight - 180
+        spawnY: worldHeight - 380
     };
 }
 
-function createPlatform(
+function createTilePlatform(
     scene: Scene,
     platforms: Phaser.Physics.Arcade.StaticGroup,
-    x: number,
+    startX: number,
     y: number,
-    width: number,
-    height: number
+    tileCount: number
 )
 {
-    const platform = scene.add.rectangle(x, y, width, height, 0x654321);
-    scene.physics.add.existing(platform, true);
-    platforms.add(platform);
+    const tileSize = 256;
+
+    for (let i = 0; i < tileCount; i++)
+    {
+        let texture = 'ground-middle';
+
+        if (i === 0)
+        {
+            texture = 'ground-left';
+        }
+        else if (i === tileCount - 1)
+        {
+            texture = 'ground-right';
+        }
+
+        const tile = scene.physics.add.staticImage(
+            startX + i * tileSize,
+            y,
+            texture
+        );
+
+        tile.setDisplaySize(tileSize, tileSize);
+        tile.refreshBody();
+
+        platforms.add(tile);
+    }
 }

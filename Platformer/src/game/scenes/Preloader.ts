@@ -10,7 +10,7 @@ export class Preloader extends Scene
     init ()
     {
         //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, 'map-bg');
+        this.add.image(512, 384, 'background');
 
         //  A simple progress bar. This is the outline of the bar.
         this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
@@ -33,8 +33,24 @@ export class Preloader extends Scene
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
+        this.load.image('ground-tile', 'tilesets/freetileset/Tiles/1.png');
+        this.load.image('ground-tile-2', 'tilesets/freetileset/Tiles/2.png');
+        this.load.image('crate', 'tilesets/freetileset/Object/Crate.png');
+        this.load.image('tree-1', 'tilesets/freetileset/Object/Tree_1.png');
+        this.load.image('bush-1', 'tilesets/freetileset/Object/Bush (1).png');
+
+        this.load.image('ground-left', 'tilesets/freetileset/Tiles/1.png');
+        this.load.image('ground-middle', 'tilesets/freetileset/Tiles/2.png');
+        this.load.image('ground-right', 'tilesets/freetileset/Tiles/3.png');
+
         this.load.image('map-bg', 'tilesets/freetileset/BG/BG.png');
-        this.load.setPath('assets');
+        this.load.image('menu-play', 'ui/buttons/play.png');
+        this.load.image('menu-play-hover', 'ui/buttons/play-hover.png');
+        this.load.image('menu-settings', 'ui/buttons/settings.png');
+        this.load.image('menu-settings-hover', 'ui/buttons/settings-hover.png');
+        this.load.image('menu-exit', 'ui/buttons/exit.png');
+        this.load.image('menu-exit-hover', 'ui/buttons/exit-hover.png');
+        this.load.image('menu-locked', 'ui/buttons/locked.png');
 
 
         for (let i = 1; i <= 10; i++)
