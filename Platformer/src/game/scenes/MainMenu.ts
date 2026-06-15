@@ -41,15 +41,15 @@ export class MainMenu extends Scene
         const spacing = 170;
 
         this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', 'Jogar', () => {
-            this.scene.start('LevelMenu');
+            this.scene.start('CharacterMenu');
         });
 
-        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', 'Opcoes', () => {
-            this.statusText.setText('Opcoes ainda nao implementadas');
+        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', 'Opções', () => {
+            this.statusText.setText('Opções ainda não implementadas');
         });
 
         this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', 'Sair', () => {
-            this.statusText.setText('No browser, fecha o separador para sair');
+            this.closeCurrentPage();
         });
 
         this.statusText = this.add.text(width / 2, height * 0.82, '', {
@@ -93,5 +93,17 @@ export class MainMenu extends Scene
         });
 
         button.on('pointerdown', onClick);
+    }
+
+    closeCurrentPage()
+    {
+        window.close();
+
+        this.time.delayedCall(250, () => {
+            if (!window.closed)
+            {
+                window.location.replace('about:blank');
+            }
+        });
     }
 }

@@ -1,11 +1,18 @@
 import { Scene } from 'phaser';
-import { createDinoAnimations } from './PlayerAnimations';
+import { createPlayerAnimations } from './PlayerAnimations';
 import { createLevel1 } from './Levels/level1';
+import { GameUI } from './GameUI';
 import { PlayerController } from './PlayerController';
+import { getPlayerCharacter } from './PlayerCharacters';
 export class Game extends Scene
 {
     camera!: Phaser.Cameras.Scene2D.Camera;
     player!: PlayerController;
+    ui!: GameUI;
+    lives = 3;
+    maxLives = 3;
+    spawnX = 0;
+    spawnY = 0;
     worldHeight = 0;
 
     constructor ()
@@ -22,23 +29,46 @@ export class Game extends Scene
         const level = createLevel1(this);
 
         this.worldHeight = level.worldHeight;
+        this.spawnX = level.spawnX;
+        this.spawnY = level.spawnY;
+        this.lives = this.maxLives;
 
-        createDinoAnimations(this);
+        createPlayerAnimations(this);
 
-        this.player = new PlayerController(this, level.spawnX, level.spawnY);
+        const selectedCharacter = getPlayerCharacter(this.registry.get('selectedCharacter'));
+
+        this.player = new PlayerController(this, this.spawnX, this.spawnY, selectedCharacter.id);
 
         this.physics.add.collider(this.player.sprite, level.platforms);
 
         this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
+
+        this.ui = new GameUI(this, this.camera, this.maxLives);
+        this.ui.setLives(this.lives);
     }
 
     update ()
     {
         this.player.update();
+        this.ui.update();
 
         if (this.player.sprite.y > this.worldHeight + 100)
         {
-            this.scene.start('GameOver');
+            this.damagePlayer();
         }
+    }
+
+    damagePlayer()
+    {
+        this.lives--;
+        this.ui.setLives(this.lives);
+
+        if (this.lives <= 0)
+        {
+            this.scene.start('GameOver');
+            return;
+        }
+
+        this.player.respawn(this.spawnX, this.spawnY);
     }
 }

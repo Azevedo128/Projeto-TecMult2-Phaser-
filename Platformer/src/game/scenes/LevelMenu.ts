@@ -53,7 +53,7 @@ export class LevelMenu extends Scene
         this.createLevelButton(width / 2 + spacing, levelY, 'Nivel 3', 'menu-locked', 'menu-locked', false, () => {});
 
         this.createMenuButton(width / 2, height * 0.82, 'menu-exit', 'menu-exit-hover', 'Voltar', () => {
-            this.scene.start('MainMenu');
+            this.scene.start('CharacterMenu');
         });
     }
 

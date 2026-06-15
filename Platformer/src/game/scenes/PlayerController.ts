@@ -1,13 +1,26 @@
 import { Input, Scene } from 'phaser';
+import {
+    DEFAULT_CHARACTER_ID,
+    getAnimationKey,
+    getFrameKey,
+    getPlayerCharacter,
+    type PlayerCharacterConfig,
+    type PlayerCharacterId,
+    type PlayerAnimationName
+} from './PlayerCharacters';
 
 export class PlayerController
 {
     sprite: Phaser.Physics.Arcade.Sprite;
 
+    private character: PlayerCharacterConfig;
+    private direction: 'left' | 'right' = 'right';
+    private currentAnimation: PlayerAnimationName = 'idle';
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private jumpCount = 0;
     private maxJumps = 2;
     private jumpForce = -500;
+    private moveSpeed = 250;
 
     private wasd: {
         W: Phaser.Input.Keyboard.Key;
@@ -16,15 +29,17 @@ export class PlayerController
         D: Phaser.Input.Keyboard.Key;
     };
 
-    constructor(scene: Scene, x: number, y: number)
+    constructor(scene: Scene, x: number, y: number, characterId: PlayerCharacterId = DEFAULT_CHARACTER_ID)
     {
-        this.sprite = scene.physics.add.sprite(x, y, 'dino-idle-1');
+        this.character = getPlayerCharacter(characterId);
+        this.sprite = scene.physics.add.sprite(x, y, getFrameKey(this.character.id, 'idle', 1));
 
-        this.sprite.setScale(0.3);
-        this.sprite.setSize(180, 325);
-        this.sprite.setOffset(100, 90);
+        this.sprite.setScale(this.character.scale);
+        this.sprite.setSize(this.character.body.width, this.character.body.height);
+        this.setDirection('right');
+        this.sprite.setDepth(10);
         this.sprite.setCollideWorldBounds(false);
-        this.sprite.play('dino-idle');
+        this.playAnimation('idle');
 
         this.cursors = scene.input.keyboard!.createCursorKeys();
 
@@ -34,6 +49,17 @@ export class PlayerController
             S: Phaser.Input.Keyboard.Key;
             D: Phaser.Input.Keyboard.Key;
         };
+    }
+
+    respawn(x: number, y: number)
+    {
+        this.jumpCount = 0;
+        this.sprite.setPosition(x, y);
+        this.sprite.setVelocity(0, 0);
+        this.sprite.setFlipX(false);
+        this.sprite.setDepth(10);
+        this.setDirection('right');
+        this.playAnimation('idle', true);
     }
 
     update()
@@ -49,22 +75,22 @@ export class PlayerController
 
         if (left)
         {
-            this.sprite.setVelocityX(-200);
+            this.sprite.setVelocityX(-this.moveSpeed);
             this.setDirection('left');
 
             if (body.blocked.down)
             {
-                this.sprite.play('dino-run', true);
+                this.playAnimation('run', true);
             }
         }
         else if (right)
         {
-            this.sprite.setVelocityX(200);
+            this.sprite.setVelocityX(this.moveSpeed);
             this.setDirection('right');
 
             if (body.blocked.down)
             {
-                this.sprite.play('dino-run', true);
+                this.playAnimation('run', true);
             }
         }
         else
@@ -73,7 +99,7 @@ export class PlayerController
 
             if (body.blocked.down)
             {
-                this.sprite.play('dino-idle', true);
+                this.playAnimation('idle', true);
             }
         }
 
@@ -91,22 +117,54 @@ export class PlayerController
         if (jumpPressed && this.jumpCount < this.maxJumps)
         {
             this.sprite.setVelocityY(this.jumpForce);
-            this.sprite.play('dino-jump');
+            this.playAnimation('jump');
             this.jumpCount++;
         }
+
+        this.applyBody();
     }
 
     private setDirection(direction: 'left' | 'right')
     {
+        this.direction = direction;
+
         if (direction === 'left')
         {
             this.sprite.setFlipX(true);
-            this.sprite.setOffset(300, 90);
         }
         else
         {
             this.sprite.setFlipX(false);
-            this.sprite.setOffset(200, 90);
         }
+
+        this.applyBody();
+    }
+
+    private playAnimation(animation: PlayerAnimationName, ignoreIfPlaying = false)
+    {
+        this.currentAnimation = animation;
+        this.sprite.play(getAnimationKey(this.character.id, animation), ignoreIfPlaying);
+        this.applyBody();
+    }
+
+    private applyBody()
+    {
+        const body = this.character.body;
+        const frame = this.sprite.frame;
+
+        const offsetX = body.centerX
+            ? Math.max(0, (frame.width - body.width) / 2)
+            : this.direction === 'left'
+                ? body.leftOffsetX
+                : body.rightOffsetX;
+
+        const bottomPadding = body.bottomPaddingByAnimation?.[this.currentAnimation] ?? body.bottomPadding;
+
+        const offsetY = bottomPadding === undefined
+            ? body.offsetY
+            : Math.max(0, frame.height - body.height - bottomPadding);
+
+        this.sprite.setSize(body.width, body.height);
+        this.sprite.setOffset(offsetX, offsetY);
     }
 }
