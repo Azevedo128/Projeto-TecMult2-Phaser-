@@ -21,6 +21,7 @@ export class PlayerController
     private maxJumps = 2;
     private jumpForce = -500;
     private moveSpeed = 250;
+    private isDying = false;
 
     private wasd: {
         W: Phaser.Input.Keyboard.Key;
@@ -53,6 +54,7 @@ export class PlayerController
 
     respawn(x: number, y: number)
     {
+        this.isDying = false;
         this.jumpCount = 0;
         this.sprite.setPosition(x, y);
         this.sprite.setVelocity(0, 0);
@@ -62,8 +64,32 @@ export class PlayerController
         this.playAnimation('idle', true);
     }
 
+    startDeath()
+    {
+        this.isDying = true;
+        this.jumpCount = this.maxJumps;
+        this.sprite.setVelocity(0, -430);
+        this.playAnimation('death');
+    }
+
+    getDeathAnimationDuration()
+    {
+        const animation = this.character.animations.death;
+        const startFrame = animation.animationStartFrame ?? 1;
+        const endFrame = animation.animationEndFrame ?? animation.frames;
+        const frameCount = endFrame - startFrame + 1;
+
+        return Math.ceil((frameCount / animation.frameRate) * 1000);
+    }
+
     update()
     {
+        if (this.isDying)
+        {
+            this.applyBody();
+            return;
+        }
+
         const body = this.sprite.body as Phaser.Physics.Arcade.Body;
 
         const left = this.cursors.left.isDown || this.wasd.A.isDown;

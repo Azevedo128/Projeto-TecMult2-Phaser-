@@ -1,5 +1,5 @@
 export type PlayerCharacterId = 'dino' | 'ninja-girl' | 'robot' | 'santa';
-export type PlayerAnimationName = 'idle' | 'run' | 'jump';
+export type PlayerAnimationName = 'idle' | 'run' | 'jump' | 'death';
 
 type AnimationConfig = {
     folder: string;
@@ -52,7 +52,8 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
         animations: {
             idle: { folder: 'idle', filePrefix: 'Idle', frames: 10, frameRate: 8, repeat: -1 },
             run: { folder: 'run', filePrefix: 'Run', frames: 8, frameRate: 12, repeat: -1 },
-            jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 35, repeat: 0 }
+            jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 35, repeat: 0 },
+            death: { folder: 'death', filePrefix: 'Dead', frames: 8, frameRate: 12, repeat: 0 }
         }
     },
     {
@@ -71,14 +72,16 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
             bottomPaddingByAnimation: {
                 idle: 11,
                 run: 25,
-                jump: 32
+                jump: 32,
+                death: 32
             },
             centerX: true
         },
         animations: {
             idle: { folder: 'idle', filePrefix: 'Idle', frames: 10, frameRate: 8, repeat: -1 },
             run: { folder: 'run', filePrefix: 'Run', frames: 10, frameRate: 12, repeat: -1 },
-            jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 28, repeat: 0 }
+            jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 28, repeat: 0 },
+            death: { folder: 'death', filePrefix: 'Dead', frames: 10, frameRate: 12, repeat: 0 }
         }
     },
     {
@@ -99,7 +102,8 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
         animations: {
             idle: { folder: 'idle', filePrefix: 'Idle', frames: 10, frameRate: 8, repeat: -1 },
             run: { folder: 'run', filePrefix: 'Run', frames: 8, frameRate: 12, repeat: -1 },
-            jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 28, repeat: 0 }
+            jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 28, repeat: 0 },
+            death: { folder: 'death', filePrefix: 'Dead', frames: 10, frameRate: 12, repeat: 0 }
         }
     },
     {
@@ -120,7 +124,8 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
             bottomPaddingByAnimation: {
                 idle: 77,
                 run: 74,
-                jump: 75
+                jump: 75,
+                death: 75
             }
         },
         animations: {
@@ -134,7 +139,8 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
                 animationEndFrame: 13,
                 frameRate: 14,
                 repeat: 0
-            }
+            },
+            death: { folder: 'death', filePrefix: 'Dead', frames: 17, frameRate: 14, repeat: 0 }
         }
     }
 ];

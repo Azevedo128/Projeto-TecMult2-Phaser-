@@ -39,15 +39,20 @@ const ACID_HITBOX: HitboxConfig = {
     width: 116,
     height: 56,
     offsetX: 6,
-    offsetY: 64
+    offsetY: 50
 };
 
 const SPIKE_HITBOX: HitboxConfig = {
     width: 80,
     height: 76,
     offsetX: 4,
-    offsetY: 12
+    offsetY: 30
 };
+
+const WALL_PANEL_PATTERN = [
+    ['level2-bg-3', 'level2-bg-4'],
+    ['level2-bg-4', 'level2-bg-3']
+];
 
 export function createLevel2(scene: Scene)
 {
@@ -106,45 +111,14 @@ function createBackground(scene: Scene, worldWidth: number, worldHeight: number)
         }
     }
 
-    createBackgroundBeams(scene, worldWidth, worldHeight);
     createBackgroundLights(scene, worldWidth);
 }
 
 function getWallPanelTexture(column: number, row: number)
 {
-    const pattern = (column + row) % 4;
+    const patternRow = WALL_PANEL_PATTERN[row % WALL_PANEL_PATTERN.length];
 
-    if (pattern === 0)
-    {
-        return 'level2-bg-3';
-    }
-
-    if (pattern === 1)
-    {
-        return 'level2-bg-4';
-    }
-
-    if (pattern === 2)
-    {
-        return 'level2-bg-5';
-    }
-
-    return 'level2-bg-6';
-}
-
-function createBackgroundBeams(scene: Scene, worldWidth: number, worldHeight: number)
-{
-    for (let x = TILE_SIZE * 2; x < worldWidth; x += TILE_SIZE * 4)
-    {
-        scene.add.rectangle(x, worldHeight / 2, 24, worldHeight, 0x0b0d13, 0.28)
-            .setDepth(BACKGROUND_DEPTH + 1);
-    }
-
-    for (let y = TILE_SIZE * 2; y < worldHeight; y += TILE_SIZE * 3)
-    {
-        scene.add.rectangle(worldWidth / 2, y, worldWidth, 18, 0x0b0d13, 0.22)
-            .setDepth(BACKGROUND_DEPTH + 1);
-    }
+    return patternRow[column % patternRow.length];
 }
 
 function createBackgroundLights(scene: Scene, worldWidth: number)

@@ -5,7 +5,6 @@ export class MainMenu extends Scene
     background!: GameObjects.Image;
     logo!: GameObjects.Image;
     title!: GameObjects.Text;
-    statusText!: GameObjects.Text;
 
     constructor ()
     {
@@ -44,22 +43,15 @@ export class MainMenu extends Scene
             this.scene.start('CharacterMenu');
         });
 
-        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', 'Opções', () => {
-            this.statusText.setText('Opções ainda não implementadas');
+        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', 'Opcoes', () => {
+            this.scene.launch('OptionsOverlay', { returnScene: 'MainMenu' });
+            this.scene.bringToTop('OptionsOverlay');
+            this.scene.pause('MainMenu');
         });
 
         this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', 'Sair', () => {
             this.closeCurrentPage();
         });
-
-        this.statusText = this.add.text(width / 2, height * 0.82, '', {
-            fontFamily: 'Arial',
-            fontSize: 22,
-            color: '#ffffff',
-            stroke: '#000000',
-            strokeThickness: 4,
-            align: 'center'
-        }).setOrigin(0.5);
     }
 
     createMenuButton(

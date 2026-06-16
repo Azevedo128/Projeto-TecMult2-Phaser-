@@ -5,20 +5,25 @@ export class GameUI
     private scene: Scene;
     private camera: Phaser.Cameras.Scene2D.Camera;
     private heartIcons: Phaser.GameObjects.Image[] = [];
+    private menuButton?: Phaser.GameObjects.Image;
     private maxLives: number;
+    private onOpenMenu?: () => void;
 
-    constructor(scene: Scene, camera: Phaser.Cameras.Scene2D.Camera, maxLives: number)
+    constructor(scene: Scene, camera: Phaser.Cameras.Scene2D.Camera, maxLives: number, onOpenMenu?: () => void)
     {
         this.scene = scene;
         this.camera = camera;
         this.maxLives = maxLives;
+        this.onOpenMenu = onOpenMenu;
 
         this.createHearts();
+        this.createMenuButton();
     }
 
     update()
     {
         this.positionHearts();
+        this.positionMenuButton();
     }
 
     setLives(lives: number)
@@ -50,6 +55,33 @@ export class GameUI
         this.positionHearts();
     }
 
+    private createMenuButton()
+    {
+        if (!this.onOpenMenu)
+        {
+            return;
+        }
+
+        this.menuButton = this.scene.add.image(0, 0, 'menu-settings')
+            .setOrigin(0, 0)
+            .setDepth(1000)
+            .setInteractive({ useHandCursor: true });
+
+        this.menuButton.on('pointerover', () => {
+            this.menuButton?.setTexture('menu-settings-hover');
+        });
+
+        this.menuButton.on('pointerout', () => {
+            this.menuButton?.setTexture('menu-settings');
+        });
+
+        this.menuButton.on('pointerdown', () => {
+            this.onOpenMenu?.();
+        });
+
+        this.positionMenuButton();
+    }
+
     private positionHearts()
     {
         const margin = 28;
@@ -67,5 +99,21 @@ export class GameUI
             heart.setPosition(worldPoint.x, worldPoint.y);
             heart.setScale(heartScale / zoom);
         }
+    }
+
+    private positionMenuButton()
+    {
+        if (!this.menuButton)
+        {
+            return;
+        }
+
+        const margin = 26;
+        const buttonScale = 0.34;
+        const zoom = this.camera.zoom;
+        const worldPoint = this.camera.getWorldPoint(margin, margin);
+
+        this.menuButton.setPosition(worldPoint.x, worldPoint.y);
+        this.menuButton.setScale(buttonScale / zoom);
     }
 }

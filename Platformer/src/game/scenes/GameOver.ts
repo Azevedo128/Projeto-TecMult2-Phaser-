@@ -1,10 +1,9 @@
-import { Scene } from 'phaser';
+import { Scene, GameObjects } from 'phaser';
 
 export class GameOver extends Scene
 {
-    camera: Phaser.Cameras.Scene2D.Camera;
-    background: Phaser.GameObjects.Image;
-    gameover_text : Phaser.GameObjects.Text;
+    background!: GameObjects.Image;
+    title!: GameObjects.Text;
 
     constructor ()
     {
@@ -13,23 +12,77 @@ export class GameOver extends Scene
 
     create ()
     {
-        this.camera = this.cameras.main
-        this.camera.setBackgroundColor(0xff0000);
+        const width = this.scale.width;
+        const height = this.scale.height;
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
+        this.createBackground(width, height);
 
-        this.gameover_text = this.add.text(512, 384, 'Game Over', {
-            fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
+        this.add.rectangle(width / 2, height / 2, Math.min(620, width * 0.82), 430, 0x000000, 0.38)
+            .setStrokeStyle(5, 0xffffff, 0.75);
+
+        this.title = this.add.text(width / 2, height * 0.32, 'Game Over', {
+            fontFamily: 'Arial Black',
+            fontSize: 64,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 9,
             align: 'center'
+        }).setOrigin(0.5);
+
+        const buttonY = height * 0.55;
+        const spacing = Math.min(190, width * 0.24);
+
+        this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', 'Recomecar', () => {
+            this.scene.start('Game');
         });
-        this.gameover_text.setOrigin(0.5);
 
-        this.input.once('pointerdown', () => {
-
+        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', 'Menu Principal', () => {
             this.scene.start('MainMenu');
-
         });
+    }
+
+    private createBackground(width: number, height: number)
+    {
+        this.background = this.add.image(width / 2, height / 2, 'map-bg');
+
+        const scaleX = width / this.background.width;
+        const scaleY = height / this.background.height;
+        const scale = Math.max(scaleX, scaleY);
+
+        this.background.setScale(scale);
+    }
+
+    private createMenuButton(
+        x: number,
+        y: number,
+        normalTexture: string,
+        hoverTexture: string,
+        label: string,
+        onClick: () => void
+    )
+    {
+        const button = this.add.image(x, y, normalTexture)
+            .setScale(0.5)
+            .setInteractive({ useHandCursor: true });
+
+        this.add.text(x, y + 82, label, {
+            fontFamily: 'Arial Black',
+            fontSize: 22,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 5,
+            align: 'center',
+            wordWrap: { width: 220 }
+        }).setOrigin(0.5);
+
+        button.on('pointerover', () => {
+            button.setTexture(hoverTexture);
+        });
+
+        button.on('pointerout', () => {
+            button.setTexture(normalTexture);
+        });
+
+        button.on('pointerdown', onClick);
     }
 }
