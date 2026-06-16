@@ -36,7 +36,7 @@ export class CharacterMenu extends Scene
 
         const spacing = Math.min(280, width * 0.26);
         const centerY = height * 0.52;
-        const startX = width / 2 - spacing;
+        const startX = width / 2 - spacing * (PLAYER_CHARACTERS.length - 1) / 2;
 
         PLAYER_CHARACTERS.forEach((character, index) => {
             this.createCharacterOption(startX + index * spacing, centerY, character);

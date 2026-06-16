@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { createPlayerAnimations } from './PlayerAnimations';
 import { createLevel1 } from './Levels/level1';
+import { createLevel2 } from './Levels/level2';
 import { GameUI } from './GameUI';
 import { PlayerController } from './PlayerController';
 import { getPlayerCharacter } from './PlayerCharacters';
@@ -26,7 +27,8 @@ export class Game extends Scene
         this.camera.setZoom(0.8);
         this.camera.setBackgroundColor(0x00ff00);
 
-        const level = createLevel1(this);
+        const selectedLevel = Number(this.registry.get('selectedLevel') ?? 1);
+        const level = selectedLevel === 2 ? createLevel2(this) : createLevel1(this);
 
         this.worldHeight = level.worldHeight;
         this.spawnX = level.spawnX;
@@ -40,6 +42,13 @@ export class Game extends Scene
         this.player = new PlayerController(this, this.spawnX, this.spawnY, selectedCharacter.id);
 
         this.physics.add.collider(this.player.sprite, level.platforms);
+
+        if ('hazards' in level)
+        {
+            this.physics.add.overlap(this.player.sprite, level.hazards, () => {
+                this.damagePlayer();
+            });
+        }
 
         this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
 

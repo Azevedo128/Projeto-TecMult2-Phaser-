@@ -67,6 +67,23 @@ export class Preloader extends Scene
         this.load.image('floating-ground-middle', 'tilesets/freetileset/Tiles/14.png');
         this.load.image('floating-ground-right', 'tilesets/freetileset/Tiles/15.png');
 
+        for (let i = 1; i <= 15; i++)
+        {
+            this.load.image(`level2-tile-${i}`, `tilesets/level2/Tile (${i}).png`);
+        }
+
+        for (let i = 1; i <= 7; i++)
+        {
+            this.load.image(`level2-bg-${i}`, `tilesets/level2/BGTile (${i}).png`);
+        }
+
+        this.load.image('level2-acid-top', 'tilesets/level2/Acid (1).png');
+        this.load.image('level2-acid-body', 'tilesets/level2/Acid (2).png');
+        this.load.image('level2-fence-left', 'tilesets/level2/Fence (1).png');
+        this.load.image('level2-fence-middle', 'tilesets/level2/Fence (2).png');
+        this.load.image('level2-fence-right', 'tilesets/level2/Fence (3).png');
+        this.load.image('level2-spike', 'tilesets/level2/Spike.png');
+
         this.load.image('map-bg', 'tilesets/freetileset/BG/BG.png');
         this.load.image('menu-play', 'ui/buttons/play.png');
         this.load.image('menu-play-hover', 'ui/buttons/play-hover.png');

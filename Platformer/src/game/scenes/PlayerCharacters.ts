@@ -1,10 +1,12 @@
-export type PlayerCharacterId = 'dino' | 'ninja-girl' | 'robot';
+export type PlayerCharacterId = 'dino' | 'ninja-girl' | 'robot' | 'santa';
 export type PlayerAnimationName = 'idle' | 'run' | 'jump';
 
 type AnimationConfig = {
     folder: string;
     filePrefix: string;
     frames: number;
+    animationStartFrame?: number;
+    animationEndFrame?: number;
     frameRate: number;
     repeat: number;
 };
@@ -98,6 +100,41 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
             idle: { folder: 'idle', filePrefix: 'Idle', frames: 10, frameRate: 8, repeat: -1 },
             run: { folder: 'run', filePrefix: 'Run', frames: 8, frameRate: 12, repeat: -1 },
             jump: { folder: 'jump', filePrefix: 'Jump', frames: 10, frameRate: 28, repeat: 0 }
+        }
+    },
+    {
+        id: 'santa',
+        label: 'Santa',
+        assetFolder: 'player/santa',
+        scale: 0.221,
+        menuScale: 0.25,
+        menuOffsetX: 26,
+        menuOffsetY: 18,
+        body: {
+            width: 244,
+            height: 441,
+            offsetY: 123,
+            rightOffsetX: 243,
+            leftOffsetX: 447,
+            bottomPadding: 77,
+            bottomPaddingByAnimation: {
+                idle: 77,
+                run: 74,
+                jump: 75
+            }
+        },
+        animations: {
+            idle: { folder: 'idle', filePrefix: 'Idle', frames: 16, frameRate: 8, repeat: -1 },
+            run: { folder: 'run', filePrefix: 'Run', frames: 11, frameRate: 12, repeat: -1 },
+            jump: {
+                folder: 'jump',
+                filePrefix: 'Jump',
+                frames: 16,
+                animationStartFrame: 5,
+                animationEndFrame: 13,
+                frameRate: 14,
+                repeat: 0
+            }
         }
     }
 ];

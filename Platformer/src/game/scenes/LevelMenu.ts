@@ -46,10 +46,15 @@ export class LevelMenu extends Scene
         const spacing = 210;
 
         this.createLevelButton(width / 2 - spacing, levelY, 'Nivel 1', 'menu-play', 'menu-play-hover', true, () => {
+            this.registry.set('selectedLevel', 1);
             this.scene.start('Game');
         });
 
-        this.createLevelButton(width / 2, levelY, 'Nivel 2', 'menu-locked', 'menu-locked', false, () => {});
+        this.createLevelButton(width / 2, levelY, 'Nivel 2', 'menu-play', 'menu-play-hover', true, () => {
+            this.registry.set('selectedLevel', 2);
+            this.scene.start('Game');
+        });
+
         this.createLevelButton(width / 2 + spacing, levelY, 'Nivel 3', 'menu-locked', 'menu-locked', false, () => {});
 
         this.createMenuButton(width / 2, height * 0.82, 'menu-exit', 'menu-exit-hover', 'Voltar', () => {

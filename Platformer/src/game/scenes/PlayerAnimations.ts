@@ -20,10 +20,14 @@ export function createPlayerAnimations(scene: Scene)
                 continue;
             }
 
+            const startFrame = animation.animationStartFrame ?? 1;
+            const endFrame = animation.animationEndFrame ?? animation.frames;
+            const frameCount = endFrame - startFrame + 1;
+
             scene.anims.create({
                 key: animationKey,
-                frames: Array.from({ length: animation.frames }, (_, i) => ({
-                    key: getFrameKey(character.id, animationName, i + 1)
+                frames: Array.from({ length: frameCount }, (_, i) => ({
+                    key: getFrameKey(character.id, animationName, startFrame + i)
                 })),
                 frameRate: animation.frameRate,
                 repeat: animation.repeat
