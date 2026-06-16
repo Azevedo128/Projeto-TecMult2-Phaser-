@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser';
+import { stopLevelMusic } from './AudioManager';
 
 export class MainMenu extends Scene
 {
@@ -16,6 +17,7 @@ export class MainMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        stopLevelMusic(this);
         this.background = this.add.image(width / 2, height / 2, 'map-bg');
 
         const scaleX = width / this.background.width;
@@ -46,7 +48,6 @@ export class MainMenu extends Scene
         this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', 'Opcoes', () => {
             this.scene.launch('OptionsOverlay', { returnScene: 'MainMenu' });
             this.scene.bringToTop('OptionsOverlay');
-            this.scene.pause('MainMenu');
         });
 
         this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', 'Sair', () => {

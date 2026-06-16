@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser';
+import { stopLevelMusic } from './AudioManager';
 
 export class PauseMenu extends Scene
 {
@@ -97,11 +98,11 @@ export class PauseMenu extends Scene
     {
         this.scene.launch('OptionsOverlay', { returnScene: 'PauseMenu' });
         this.scene.bringToTop('OptionsOverlay');
-        this.scene.pause('PauseMenu');
     }
 
     private exitLevel()
     {
+        stopLevelMusic(this);
         this.scene.stop('Game');
         this.scene.stop();
         this.scene.start('LevelMenu');

@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser';
+import { stopLevelMusic } from './AudioManager';
 import { createPlayerAnimations } from './PlayerAnimations';
 import {
     getAnimationKey,
@@ -22,6 +23,7 @@ export class CharacterMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        stopLevelMusic(this);
         createPlayerAnimations(this);
         this.createBackground(width, height);
 

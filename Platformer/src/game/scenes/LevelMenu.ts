@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser';
+import { stopLevelMusic } from './AudioManager';
 
 export class LevelMenu extends Scene
 {
@@ -16,6 +17,7 @@ export class LevelMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        stopLevelMusic(this);
         this.background = this.add.image(width / 2, height / 2, 'map-bg');
 
         const scaleX = width / this.background.width;

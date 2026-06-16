@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser';
+import { stopLevelMusic } from './AudioManager';
 
 export class GameOver extends Scene
 {
@@ -15,6 +16,7 @@ export class GameOver extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        stopLevelMusic(this);
         this.createBackground(width, height);
 
         this.add.rectangle(width / 2, height / 2, Math.min(620, width * 0.82), 430, 0x000000, 0.38)

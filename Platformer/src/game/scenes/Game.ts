@@ -5,6 +5,7 @@ import { createLevel2 } from './Levels/level2';
 import { GameUI } from './GameUI';
 import { PlayerController } from './PlayerController';
 import { getPlayerCharacter } from './PlayerCharacters';
+import { playLevelMusic, stopLevelMusic } from './AudioManager';
 export class Game extends Scene
 {
     camera!: Phaser.Cameras.Scene2D.Camera;
@@ -30,6 +31,7 @@ export class Game extends Scene
         this.camera.setZoom(0.8);
         this.camera.setBackgroundColor(0x00ff00);
         this.physics.world.drawDebug = Boolean(this.registry.get('showHitboxes'));
+        playLevelMusic(this);
 
         if (this.physics.world.debugGraphic)
         {
@@ -102,6 +104,7 @@ export class Game extends Scene
 
         if (this.lives <= 0)
         {
+            stopLevelMusic(this);
             this.scene.start('GameOver');
             return;
         }
@@ -133,6 +136,7 @@ export class Game extends Scene
     {
         if (this.lives <= 0)
         {
+            stopLevelMusic(this);
             this.scene.start('GameOver');
             return;
         }
