@@ -6,6 +6,24 @@ import { GameUI } from './GameUI';
 import { PlayerController } from './PlayerController';
 import { getPlayerCharacter } from './PlayerCharacters';
 import { playLevelMusic, stopLevelMusic } from './AudioManager';
+
+type BaseLevel = {
+    platforms: Phaser.Physics.Arcade.StaticGroup;
+    worldWidth: number;
+    worldHeight: number;
+    spawnX: number;
+    spawnY: number;
+};
+
+type LevelWithHazards = BaseLevel & {
+    hazards: Phaser.Physics.Arcade.StaticGroup;
+};
+
+function hasHazards(level: BaseLevel | LevelWithHazards): level is LevelWithHazards
+{
+    return 'hazards' in level;
+}
+
 export class Game extends Scene
 {
     camera!: Phaser.Cameras.Scene2D.Camera;
@@ -39,7 +57,7 @@ export class Game extends Scene
         }
 
         const selectedLevel = Number(this.registry.get('selectedLevel') ?? 1);
-        const level = selectedLevel === 2 ? createLevel2(this) : createLevel1(this);
+        const level: BaseLevel | LevelWithHazards = selectedLevel === 2 ? createLevel2(this) : createLevel1(this);
 
         this.worldHeight = level.worldHeight;
         this.spawnX = level.spawnX;
@@ -54,7 +72,7 @@ export class Game extends Scene
 
         this.platformCollider = this.physics.add.collider(this.player.sprite, level.platforms);
 
-        if ('hazards' in level)
+        if (hasHazards(level))
         {
             this.hazardOverlap = this.physics.add.overlap(this.player.sprite, level.hazards, () => {
                 this.startObstacleDeath();

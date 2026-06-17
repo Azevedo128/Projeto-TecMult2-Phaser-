@@ -13,7 +13,7 @@ type AnimationConfig = {
 
 export type PlayerCharacterConfig = {
     id: PlayerCharacterId;
-    label: string;
+    labelKey: string;
     assetFolder: string;
     scale: number;
     menuScale: number;
@@ -37,7 +37,7 @@ export const DEFAULT_CHARACTER_ID: PlayerCharacterId = 'dino';
 export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
     {
         id: 'dino',
-        label: 'Dino',
+        labelKey: 'characters.dino',
         assetFolder: 'player/dino',
         scale: 0.3,
         menuScale: 0.34,
@@ -58,7 +58,7 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
     },
     {
         id: 'ninja-girl',
-        label: 'Ninja Girl',
+        labelKey: 'characters.ninjaGirl',
         assetFolder: 'player/ninja-girl',
         scale: 0.283,
         menuScale: 0.34,
@@ -86,7 +86,7 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
     },
     {
         id: 'robot',
-        label: 'Robot',
+        labelKey: 'characters.robot',
         assetFolder: 'player/robot',
         scale: 0.255,
         menuScale: 0.29,
@@ -108,7 +108,7 @@ export const PLAYER_CHARACTERS: PlayerCharacterConfig[] = [
     },
     {
         id: 'santa',
-        label: 'Santa',
+        labelKey: 'characters.santa',
         assetFolder: 'player/santa',
         scale: 0.221,
         menuScale: 0.25,

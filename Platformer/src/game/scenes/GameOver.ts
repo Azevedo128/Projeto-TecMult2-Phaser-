@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { translate as t } from '../i18n';
 
 export class GameOver extends Scene
 {
@@ -22,7 +23,7 @@ export class GameOver extends Scene
         this.add.rectangle(width / 2, height / 2, Math.min(620, width * 0.82), 430, 0x000000, 0.38)
             .setStrokeStyle(5, 0xffffff, 0.75);
 
-        this.title = this.add.text(width / 2, height * 0.32, 'Game Over', {
+        this.title = this.add.text(width / 2, height * 0.32, t(this, 'gameOver.title'), {
             fontFamily: 'Arial Black',
             fontSize: 64,
             color: '#ffffff',
@@ -34,11 +35,11 @@ export class GameOver extends Scene
         const buttonY = height * 0.55;
         const spacing = Math.min(190, width * 0.24);
 
-        this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', 'Recomecar', () => {
+        this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', t(this, 'gameOver.restart'), () => {
             this.scene.start('Game');
         });
 
-        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', 'Menu Principal', () => {
+        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', t(this, 'gameOver.mainMenu'), () => {
             this.scene.start('MainMenu');
         });
     }

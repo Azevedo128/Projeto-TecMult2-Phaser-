@@ -1,0 +1,58 @@
+{
+    "main": {
+        "title": "Platformer",
+        "play": "Spielen",
+        "options": "Optionen",
+        "exit": "Beenden"
+    },
+    "character": {
+        "title": "Charakter Wählen"
+    },
+    "characters": {
+        "dino": "Dino",
+        "ninjaGirl": "Ninja Girl",
+        "robot": "Robot",
+        "santa": "Santa"
+    },
+    "levels": {
+        "title": "Level Auswählen",
+        "subtitle": "Wähle ein Level zum Spielen",
+        "level1": "Level 1",
+        "level2": "Level 2",
+        "level3": "Level 3",
+        "locked": "Gesperrt"
+    },
+    "pause": {
+        "title": "Menü",
+        "continue": "Fortsetzen",
+        "restart": "Neustarten",
+        "options": "Optionen",
+        "exitLevel": "Level Verlassen"
+    },
+    "gameOver": {
+        "title": "Game Over",
+        "restart": "Neustarten",
+        "mainMenu": "Hauptmenü"
+    },
+    "options": {
+        "title": "Optionen",
+        "fullscreen": "Vollbild",
+        "hitboxes": "Hitboxes",
+        "deathAnimation": "Todesanimation",
+        "volume": "Lautstärke: {{volume}}%",
+        "languageBar": "Sprache: {{language}}",
+        "languageTitle": "SPRACHE",
+        "languageSubtitle": "Wähle eine Sprache"
+    },
+    "languageNames": {
+        "pt": "Portugiesisch",
+        "en": "Englisch",
+        "es": "Spanisch",
+        "de": "Deutsch",
+        "zh": "Chinesisch"
+    },
+    "common": {
+        "back": "Zurück",
+        "cancel": "Abbrechen"
+    }
+}

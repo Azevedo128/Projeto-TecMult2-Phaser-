@@ -1,7 +1,13 @@
 import { Scene, GameObjects } from 'phaser';
 import { getSavedVolume, setSavedVolume } from './AudioManager';
-
-const LANGUAGE_OPTIONS = ['Portugues', 'Ingles', 'Espanhol', 'Alemao', 'Chines'];
+import {
+    getCurrentLanguage,
+    getLanguageName,
+    LANGUAGE_OPTIONS,
+    setCurrentLanguage,
+    translate as t,
+    type LanguageOption
+} from '../i18n';
 
 function clamp(value: number, min: number, max: number)
 {
@@ -11,18 +17,24 @@ function clamp(value: number, min: number, max: number)
 export class OptionsOverlay extends Scene
 {
     returnScene = 'PauseMenu';
+    titleText!: GameObjects.Text;
     fullscreenLabel!: GameObjects.Text;
+    fullscreenCheck!: GameObjects.Text;
     hitboxesLabel!: GameObjects.Text;
+    hitboxesCheck!: GameObjects.Text;
     deathAnimationLabel!: GameObjects.Text;
+    deathAnimationCheck!: GameObjects.Text;
     volumeLabel!: GameObjects.Text;
     volumeFill!: GameObjects.Rectangle;
     volumeHandle!: GameObjects.Rectangle;
     languageLabel!: GameObjects.Text;
     languageBar!: GameObjects.Rectangle;
     languageArrow!: GameObjects.Text;
+    backButtonLabel!: GameObjects.Text;
     languageOptions: GameObjects.GameObject[] = [];
     languageMenuOpen = false;
     isDraggingVolume = false;
+    languageChanged = false;
 
     constructor ()
     {
@@ -42,7 +54,7 @@ export class OptionsOverlay extends Scene
         this.add.rectangle(width / 2, height / 2, 780, 640, 0x10131b, 0.92)
             .setStrokeStyle(5, 0xffffff, 0.85);
 
-        this.add.text(width / 2, height / 2 - 260, 'Opcoes', {
+        this.titleText = this.add.text(width / 2, height / 2 - 260, t(this, 'options.title'), {
             fontFamily: 'Arial Black',
             fontSize: 48,
             color: '#ffffff',
@@ -54,31 +66,40 @@ export class OptionsOverlay extends Scene
         const optionY = height / 2 - 145;
         const spacing = 220;
 
-        this.fullscreenLabel = this.createIconButton(
+        const fullscreenOption = this.createCheckboxOption(
             width / 2 - spacing,
             optionY,
             this.getFullscreenText(),
+            this.scale.isFullscreen,
             () => this.toggleFullscreen()
         );
+        this.fullscreenLabel = fullscreenOption.label;
+        this.fullscreenCheck = fullscreenOption.check;
 
-        this.deathAnimationLabel = this.createIconButton(
+        const deathAnimationOption = this.createCheckboxOption(
             width / 2,
             optionY,
             this.getDeathAnimationText(),
+            this.getDeathAnimationEnabled(),
             () => this.toggleDeathAnimation()
         );
+        this.deathAnimationLabel = deathAnimationOption.label;
+        this.deathAnimationCheck = deathAnimationOption.check;
 
-        this.hitboxesLabel = this.createIconButton(
+        const hitboxesOption = this.createCheckboxOption(
             width / 2 + spacing,
             optionY,
             this.getHitboxesText(),
+            this.getHitboxesEnabled(),
             () => this.toggleHitboxes()
         );
+        this.hitboxesLabel = hitboxesOption.label;
+        this.hitboxesCheck = hitboxesOption.check;
 
         this.createVolumeSlider(width / 2, height / 2 + 10, 560);
         this.createLanguageSelector(width / 2, height / 2 + 125, 560);
 
-        this.createTextButton(width / 2, height / 2 + 255, 'Voltar', () => {
+        this.backButtonLabel = this.createTextButton(width / 2, height / 2 + 255, t(this, 'common.back'), () => {
             this.closeOverlay();
         });
 
@@ -87,13 +108,22 @@ export class OptionsOverlay extends Scene
         });
     }
 
-    private createIconButton(x: number, y: number, label: string, onClick: () => void)
+    private createCheckboxOption(x: number, y: number, label: string, checked: boolean, onClick: () => void)
     {
-        const button = this.add.image(x, y, 'menu-settings')
-            .setScale(0.43)
+        const box = this.add.rectangle(x, y, 62, 62, 0xffffff, 0.06)
+            .setStrokeStyle(5, 0xffffff, 0.9)
             .setInteractive({ useHandCursor: true });
 
-        const labelText = this.add.text(x, y + 74, label, {
+        const check = this.add.text(x, y - 2, checked ? 'X' : '', {
+            fontFamily: 'Arial Black',
+            fontSize: 40,
+            color: '#fff176',
+            stroke: '#000000',
+            strokeThickness: 6,
+            align: 'center'
+        }).setOrigin(0.5);
+
+        const labelText = this.add.text(x, y + 76, label, {
             fontFamily: 'Arial Black',
             fontSize: 20,
             color: '#ffffff',
@@ -102,17 +132,28 @@ export class OptionsOverlay extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        button.on('pointerover', () => {
-            button.setTexture('menu-settings-hover');
-        });
+        const setHover = (active: boolean) => {
+            box.setFillStyle(active ? 0x2f8fdd : 0xffffff, active ? 0.25 : 0.06);
+            box.setStrokeStyle(5, active ? 0xfff176 : 0xffffff, active ? 1 : 0.9);
+        };
 
-        button.on('pointerout', () => {
-            button.setTexture('menu-settings');
-        });
+        const click = () => {
+            onClick();
+        };
 
-        button.on('pointerdown', onClick);
+        box.on('pointerover', () => setHover(true));
+        box.on('pointerout', () => setHover(false));
+        box.on('pointerdown', click);
 
-        return labelText;
+        labelText.setInteractive({ useHandCursor: true });
+        labelText.on('pointerover', () => setHover(true));
+        labelText.on('pointerout', () => setHover(false));
+        labelText.on('pointerdown', click);
+
+        return {
+            label: labelText,
+            check
+        };
     }
 
     private createTextButton(x: number, y: number, label: string, onClick: () => void)
@@ -143,6 +184,8 @@ export class OptionsOverlay extends Scene
         text.on('pointerover', () => setHover(true));
         text.on('pointerout', () => setHover(false));
         text.on('pointerdown', onClick);
+
+        return text;
     }
 
     private createVolumeSlider(x: number, y: number, width: number)
@@ -281,6 +324,17 @@ export class OptionsOverlay extends Scene
         this.volumeHandle.setPosition(x - width / 2 + fillWidth, y);
     }
 
+    private updateTranslatedText()
+    {
+        this.titleText.setText(t(this, 'options.title'));
+        this.fullscreenLabel.setText(this.getFullscreenText());
+        this.hitboxesLabel.setText(this.getHitboxesText());
+        this.deathAnimationLabel.setText(this.getDeathAnimationText());
+        this.volumeLabel.setText(this.getVolumeText());
+        this.languageLabel.setText(this.getLanguageText());
+        this.backButtonLabel.setText(t(this, 'common.back'));
+    }
+
     private createLanguageSelector(x: number, y: number, width: number)
     {
         const barHeight = 56;
@@ -308,7 +362,7 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const toggle = () => {
-            this.toggleLanguageMenu(x, y + 66, width);
+            this.toggleLanguageMenu();
         };
 
         this.languageBar.on('pointerover', () => {
@@ -326,7 +380,7 @@ export class OptionsOverlay extends Scene
         this.languageArrow.on('pointerdown', toggle);
     }
 
-    private toggleLanguageMenu(x: number, y: number, width: number)
+    private toggleLanguageMenu()
     {
         if (this.languageMenuOpen)
         {
@@ -334,66 +388,144 @@ export class OptionsOverlay extends Scene
             return;
         }
 
-        this.openLanguageMenu(x, y, width);
+        this.openLanguageMenu();
     }
 
-    private openLanguageMenu(x: number, y: number, width: number)
+    private openLanguageMenu()
     {
         this.closeLanguageMenu();
 
-        const optionWidth = width / LANGUAGE_OPTIONS.length;
-        const optionHeight = 46;
-        const startX = x - width / 2 + optionWidth / 2;
+        const width = this.scale.width;
+        const height = this.scale.height;
+        const centerX = width / 2;
+        const centerY = height / 2 + 16;
+        const panelWidth = 760;
+        const panelHeight = 500;
+        const headerY = centerY - panelHeight / 2 + 64;
+
+        const blocker = this.add.rectangle(centerX, centerY, panelWidth + 50, panelHeight + 50, 0x000000, 0.18)
+            .setInteractive();
+
+        const panel = this.add.rectangle(centerX, centerY, panelWidth, panelHeight, 0x171514, 0.98)
+            .setStrokeStyle(5, 0x050505, 1);
+
+        const header = this.add.rectangle(centerX, headerY, panelWidth - 34, 102, 0x211f1d, 1)
+            .setStrokeStyle(3, 0x090909, 1);
+
+        const title = this.add.text(centerX - panelWidth / 2 + 52, headerY - 22, t(this, 'options.languageTitle'), {
+            fontFamily: 'Arial Black',
+            fontSize: 24,
+            color: '#ffd451',
+            stroke: '#000000',
+            strokeThickness: 5,
+            align: 'left'
+        }).setOrigin(0, 0.5);
+
+        const subtitle = this.add.text(centerX - panelWidth / 2 + 52, headerY + 18, t(this, 'options.languageSubtitle'), {
+            fontFamily: 'Arial',
+            fontSize: 18,
+            color: '#ffffff',
+            align: 'left'
+        }).setOrigin(0, 0.5);
+
+        this.languageOptions.push(blocker, panel, header, title, subtitle);
 
         LANGUAGE_OPTIONS.forEach((language, index) => {
-            const optionX = startX + index * optionWidth;
-            const isSelected = language === this.getSelectedLanguage();
+            const columns = index < 3 ? 3 : 2;
+            const column = index < 3 ? index : index - 3;
+            const row = index < 3 ? 0 : 1;
+            const optionSpacingX = 205;
+            const optionSpacingY = 145;
+            const optionX = centerX - ((columns - 1) * optionSpacingX) / 2 + column * optionSpacingX;
+            const optionY = centerY - 42 + row * optionSpacingY;
 
-            const background = this.add.rectangle(
-                optionX,
-                y,
-                optionWidth - 4,
-                optionHeight,
-                isSelected ? 0x2f8fdd : 0x1b1d26,
-                0.96
-            )
-                .setStrokeStyle(3, isSelected ? 0xfff176 : 0xffffff, isSelected ? 1 : 0.75)
-                .setInteractive({ useHandCursor: true });
-
-            const label = this.add.text(optionX, y, language, {
-                fontFamily: 'Arial Black',
-                fontSize: 18,
-                color: '#ffffff',
-                stroke: '#000000',
-                strokeThickness: 4,
-                align: 'center'
-            }).setOrigin(0.5);
-
-            const chooseLanguage = () => {
-                this.registry.set('selectedLanguage', language);
-                this.languageLabel.setText(this.getLanguageText());
-                this.closeLanguageMenu();
-            };
-
-            background.on('pointerover', () => {
-                background.setFillStyle(0x2f8fdd, 1);
-                background.setStrokeStyle(3, 0xfff176, 1);
-            });
-
-            background.on('pointerout', () => {
-                background.setFillStyle(isSelected ? 0x2f8fdd : 0x1b1d26, 0.96);
-                background.setStrokeStyle(3, isSelected ? 0xfff176 : 0xffffff, isSelected ? 1 : 0.75);
-            });
-
-            background.on('pointerdown', chooseLanguage);
-            label.setInteractive({ useHandCursor: true });
-            label.on('pointerdown', chooseLanguage);
-
-            this.languageOptions.push(background, label);
+            this.createLanguageChoice(language, optionX, optionY);
         });
+
+        this.createLanguageCancelButton(centerX, centerY + panelHeight / 2 - 42);
 
         this.languageMenuOpen = true;
         this.languageArrow.setText('^');
+    }
+
+    private createLanguageChoice(language: LanguageOption, x: number, y: number)
+    {
+        const isSelected = language.id === this.getSelectedLanguage();
+        const hitArea = this.add.rectangle(x, y, 166, 128, isSelected ? 0x2f8fdd : 0x000000, isSelected ? 0.16 : 0.01)
+            .setStrokeStyle(isSelected ? 3 : 0, isSelected ? 0xffd451 : 0x000000, isSelected ? 1 : 0)
+            .setInteractive({ useHandCursor: true });
+
+        const flag = this.add.image(x, y - 18, language.flagKey)
+            .setDisplaySize(96, 72);
+
+        const label = this.add.text(x, y + 44, getLanguageName(this, language.id).toUpperCase(), {
+            fontFamily: 'Arial Black',
+            fontSize: 18,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 5,
+            align: 'center'
+        }).setOrigin(0.5);
+
+        const chooseLanguage = () => {
+            setCurrentLanguage(this, language.id);
+            this.languageChanged = true;
+            this.updateTranslatedText();
+            this.closeLanguageMenu();
+        };
+
+        const setHover = (active: boolean) => {
+            hitArea.setFillStyle(active || isSelected ? 0x2f8fdd : 0x000000, active ? 0.24 : isSelected ? 0.16 : 0.01);
+            hitArea.setStrokeStyle(active || isSelected ? 3 : 0, active ? 0xffffff : 0xffd451, active || isSelected ? 1 : 0);
+        };
+
+        hitArea.on('pointerover', () => setHover(true));
+        hitArea.on('pointerout', () => setHover(false));
+        hitArea.on('pointerdown', chooseLanguage);
+
+        flag.setInteractive({ useHandCursor: true });
+        flag.on('pointerover', () => setHover(true));
+        flag.on('pointerout', () => setHover(false));
+        flag.on('pointerdown', chooseLanguage);
+
+        label.setInteractive({ useHandCursor: true });
+        label.on('pointerover', () => setHover(true));
+        label.on('pointerout', () => setHover(false));
+        label.on('pointerdown', chooseLanguage);
+
+        this.languageOptions.push(hitArea, flag, label);
+    }
+
+    private createLanguageCancelButton(x: number, y: number)
+    {
+        const button = this.add.rectangle(x, y, 170, 54, 0x2b2a28, 1)
+            .setStrokeStyle(4, 0x050505, 1)
+            .setInteractive({ useHandCursor: true });
+
+        const label = this.add.text(x, y, t(this, 'common.cancel').toUpperCase(), {
+            fontFamily: 'Arial Black',
+            fontSize: 20,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 5,
+            align: 'center'
+        }).setOrigin(0.5);
+
+        const setHover = (active: boolean) => {
+            button.setFillStyle(active ? 0x3a3937 : 0x2b2a28, 1);
+            button.setStrokeStyle(4, active ? 0xffd451 : 0x050505, 1);
+        };
+
+        button.on('pointerover', () => setHover(true));
+        button.on('pointerout', () => setHover(false));
+        button.on('pointerdown', () => this.closeLanguageMenu());
+
+        label.setInteractive({ useHandCursor: true });
+        label.on('pointerover', () => setHover(true));
+        label.on('pointerout', () => setHover(false));
+        label.on('pointerdown', () => this.closeLanguageMenu());
+
+        this.languageOptions.push(button, label);
     }
 
     private closeLanguageMenu()
@@ -411,14 +543,14 @@ export class OptionsOverlay extends Scene
     private toggleFullscreen()
     {
         this.scale.toggleFullscreen();
-        this.fullscreenLabel.setText(this.getFullscreenText());
+        this.updateFullscreenOption();
 
         this.scale.once('enterfullscreen', () => {
-            this.fullscreenLabel.setText(this.getFullscreenText());
+            this.updateFullscreenOption();
         });
 
         this.scale.once('leavefullscreen', () => {
-            this.fullscreenLabel.setText(this.getFullscreenText());
+            this.updateFullscreenOption();
         });
     }
 
@@ -428,7 +560,7 @@ export class OptionsOverlay extends Scene
 
         this.registry.set('showHitboxes', !enabled);
         this.applyHitboxSetting();
-        this.hitboxesLabel.setText(this.getHitboxesText());
+        this.updateHitboxesOption();
     }
 
     private toggleDeathAnimation()
@@ -436,7 +568,30 @@ export class OptionsOverlay extends Scene
         const enabled = this.getDeathAnimationEnabled();
 
         this.registry.set('deathAnimationEnabled', !enabled);
+        this.updateDeathAnimationOption();
+    }
+
+    private updateFullscreenOption()
+    {
+        this.fullscreenLabel.setText(this.getFullscreenText());
+        this.setCheckboxValue(this.fullscreenCheck, this.scale.isFullscreen);
+    }
+
+    private updateHitboxesOption()
+    {
+        this.hitboxesLabel.setText(this.getHitboxesText());
+        this.setCheckboxValue(this.hitboxesCheck, this.getHitboxesEnabled());
+    }
+
+    private updateDeathAnimationOption()
+    {
         this.deathAnimationLabel.setText(this.getDeathAnimationText());
+        this.setCheckboxValue(this.deathAnimationCheck, this.getDeathAnimationEnabled());
+    }
+
+    private setCheckboxValue(check: GameObjects.Text, checked: boolean)
+    {
+        check.setText(checked ? 'X' : '');
     }
 
     private applyHitboxSetting()
@@ -459,37 +614,46 @@ export class OptionsOverlay extends Scene
 
     private closeOverlay()
     {
+        const returnScene = this.scene.get(this.returnScene);
+
         if (this.scene.isPaused(this.returnScene))
         {
             this.scene.resume(this.returnScene);
         }
 
         this.scene.stop();
+
+        if (this.languageChanged)
+        {
+            returnScene.events.emit('language-changed');
+        }
     }
 
     private getFullscreenText()
     {
-        return `Ecra Inteiro\n${this.scale.isFullscreen ? 'Ligado' : 'Desligado'}`;
+        return t(this, 'options.fullscreen');
     }
 
     private getHitboxesText()
     {
-        return `Hitboxes\n${this.getHitboxesEnabled() ? 'Ligadas' : 'Desligadas'}`;
+        return t(this, 'options.hitboxes');
     }
 
     private getDeathAnimationText()
     {
-        return `Animacao Morte\n${this.getDeathAnimationEnabled() ? 'Ligada' : 'Desligada'}`;
+        return t(this, 'options.deathAnimation');
     }
 
     private getVolumeText()
     {
-        return `Volume: ${getSavedVolume(this)}%`;
+        return t(this, 'options.volume', { volume: getSavedVolume(this) });
     }
 
     private getLanguageText()
     {
-        return `Lingua: ${this.getSelectedLanguage()}`;
+        return t(this, 'options.languageBar', {
+            language: getLanguageName(this, this.getSelectedLanguage())
+        });
     }
 
     private getHitboxesEnabled()
@@ -506,13 +670,13 @@ export class OptionsOverlay extends Scene
 
     private getSelectedLanguage()
     {
-        const selectedLanguage = this.registry.get('selectedLanguage');
+        return this.getSelectedLanguageOption().id;
+    }
 
-        if (typeof selectedLanguage === 'string' && LANGUAGE_OPTIONS.includes(selectedLanguage))
-        {
-            return selectedLanguage;
-        }
+    private getSelectedLanguageOption()
+    {
+        const selectedLanguage = getCurrentLanguage(this);
 
-        return LANGUAGE_OPTIONS[0];
+        return LANGUAGE_OPTIONS.find((option) => option.id === selectedLanguage) ?? LANGUAGE_OPTIONS[0];
     }
 }

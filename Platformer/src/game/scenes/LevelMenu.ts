@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { translate as t } from '../i18n';
 
 export class LevelMenu extends Scene
 {
@@ -26,7 +27,7 @@ export class LevelMenu extends Scene
 
         this.background.setScale(scale);
 
-        this.title = this.add.text(width / 2, height * 0.18, 'Selecionar Nivel', {
+        this.title = this.add.text(width / 2, height * 0.18, t(this, 'levels.title'), {
             fontFamily: 'Arial Black',
             fontSize: 52,
             color: '#ffffff',
@@ -35,7 +36,7 @@ export class LevelMenu extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        this.subtitle = this.add.text(width / 2, height * 0.28, 'Escolhe o nivel para jogar', {
+        this.subtitle = this.add.text(width / 2, height * 0.28, t(this, 'levels.subtitle'), {
             fontFamily: 'Arial Black',
             fontSize: 24,
             color: '#ffffff',
@@ -47,19 +48,19 @@ export class LevelMenu extends Scene
         const levelY = height * 0.52;
         const spacing = 210;
 
-        this.createLevelButton(width / 2 - spacing, levelY, 'Nivel 1', 'menu-play', 'menu-play-hover', true, () => {
+        this.createLevelButton(width / 2 - spacing, levelY, t(this, 'levels.level1'), 'menu-play', 'menu-play-hover', true, () => {
             this.registry.set('selectedLevel', 1);
             this.scene.start('Game');
         });
 
-        this.createLevelButton(width / 2, levelY, 'Nivel 2', 'menu-play', 'menu-play-hover', true, () => {
+        this.createLevelButton(width / 2, levelY, t(this, 'levels.level2'), 'menu-play', 'menu-play-hover', true, () => {
             this.registry.set('selectedLevel', 2);
             this.scene.start('Game');
         });
 
-        this.createLevelButton(width / 2 + spacing, levelY, 'Nivel 3', 'menu-locked', 'menu-locked', false, () => {});
+        this.createLevelButton(width / 2 + spacing, levelY, t(this, 'levels.level3'), 'menu-locked', 'menu-locked', false, () => {});
 
-        this.createMenuButton(width / 2, height * 0.82, 'menu-exit', 'menu-exit-hover', 'Voltar', () => {
+        this.createMenuButton(width / 2, height * 0.82, 'menu-exit', 'menu-exit-hover', t(this, 'common.back'), () => {
             this.scene.start('CharacterMenu');
         });
     }
@@ -107,7 +108,7 @@ export class LevelMenu extends Scene
 
         if (!unlocked)
         {
-            this.add.text(x, y + 112, 'Bloqueado', {
+            this.add.text(x, y + 112, t(this, 'levels.locked'), {
                 fontFamily: 'Arial Black',
                 fontSize: 16,
                 color: '#d9d9d9',

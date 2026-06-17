@@ -92,6 +92,11 @@ export class Preloader extends Scene
         this.load.image('menu-exit', 'ui/buttons/exit.png');
         this.load.image('menu-exit-hover', 'ui/buttons/exit-hover.png');
         this.load.image('menu-locked', 'ui/buttons/locked.png');
+        this.load.image('flag-pt', 'ui/flags/pt.png');
+        this.load.image('flag-en', 'ui/flags/gb-eng.png');
+        this.load.image('flag-es', 'ui/flags/es.png');
+        this.load.image('flag-de', 'ui/flags/de.png');
+        this.load.image('flag-cn', 'ui/flags/cn.png');
         this.load.audio('level-music', 'audio/Desert Dreams.mp3');
 
 

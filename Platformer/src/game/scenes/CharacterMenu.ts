@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { translate as t } from '../i18n';
 import { createPlayerAnimations } from './PlayerAnimations';
 import {
     getAnimationKey,
@@ -27,7 +28,7 @@ export class CharacterMenu extends Scene
         createPlayerAnimations(this);
         this.createBackground(width, height);
 
-        this.title = this.add.text(width / 2, height * 0.16, 'Escolhe Personagem', {
+        this.title = this.add.text(width / 2, height * 0.16, t(this, 'character.title'), {
             fontFamily: 'Arial Black',
             fontSize: 52,
             color: '#ffffff',
@@ -44,7 +45,7 @@ export class CharacterMenu extends Scene
             this.createCharacterOption(startX + index * spacing, centerY, character);
         });
 
-        this.createMenuButton(width / 2, height * 0.84, 'menu-exit', 'menu-exit-hover', 'Voltar', () => {
+        this.createMenuButton(width / 2, height * 0.84, 'menu-exit', 'menu-exit-hover', t(this, 'common.back'), () => {
             this.scene.start('MainMenu');
         });
     }
@@ -76,7 +77,7 @@ export class CharacterMenu extends Scene
 
         preview.play(getAnimationKey(character.id, 'idle'));
 
-        this.add.text(x, y + 106, character.label, {
+        this.add.text(x, y + 106, t(this, character.labelKey), {
             fontFamily: 'Arial Black',
             fontSize: 24,
             color: '#ffffff',

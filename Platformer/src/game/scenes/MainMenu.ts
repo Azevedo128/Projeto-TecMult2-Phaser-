@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { translate as t } from '../i18n';
 
 export class MainMenu extends Scene
 {
@@ -17,6 +18,8 @@ export class MainMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        this.events.once('language-changed', () => this.scene.restart());
+
         stopLevelMusic(this);
         this.background = this.add.image(width / 2, height / 2, 'map-bg');
 
@@ -29,7 +32,7 @@ export class MainMenu extends Scene
         this.logo = this.add.image(width / 2, height * 0.24, 'logo')
             .setScale(0.75);
 
-        this.title = this.add.text(width / 2, height * 0.42, 'Platformer', {
+        this.title = this.add.text(width / 2, height * 0.42, t(this, 'main.title'), {
             fontFamily: 'Arial Black',
             fontSize: 52,
             color: '#ffffff',
@@ -41,16 +44,16 @@ export class MainMenu extends Scene
         const buttonY = height * 0.62;
         const spacing = 170;
 
-        this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', 'Jogar', () => {
+        this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', t(this, 'main.play'), () => {
             this.scene.start('CharacterMenu');
         });
 
-        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', 'Opcoes', () => {
+        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', t(this, 'main.options'), () => {
             this.scene.launch('OptionsOverlay', { returnScene: 'MainMenu' });
             this.scene.bringToTop('OptionsOverlay');
         });
 
-        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', 'Sair', () => {
+        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', t(this, 'main.exit'), () => {
             this.closeCurrentPage();
         });
     }

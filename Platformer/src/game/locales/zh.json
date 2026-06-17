@@ -1,0 +1,58 @@
+{
+    "main": {
+        "title": "Platformer",
+        "play": "开始",
+        "options": "选项",
+        "exit": "退出"
+    },
+    "character": {
+        "title": "选择角色"
+    },
+    "characters": {
+        "dino": "Dino",
+        "ninjaGirl": "Ninja Girl",
+        "robot": "Robot",
+        "santa": "Santa"
+    },
+    "levels": {
+        "title": "选择关卡",
+        "subtitle": "选择要游玩的关卡",
+        "level1": "关卡 1",
+        "level2": "关卡 2",
+        "level3": "关卡 3",
+        "locked": "已锁定"
+    },
+    "pause": {
+        "title": "菜单",
+        "continue": "继续",
+        "restart": "重新开始",
+        "options": "选项",
+        "exitLevel": "退出关卡"
+    },
+    "gameOver": {
+        "title": "游戏结束",
+        "restart": "重新开始",
+        "mainMenu": "主菜单"
+    },
+    "options": {
+        "title": "选项",
+        "fullscreen": "全屏",
+        "hitboxes": "碰撞箱",
+        "deathAnimation": "死亡动画",
+        "volume": "音量: {{volume}}%",
+        "languageBar": "语言: {{language}}",
+        "languageTitle": "语言",
+        "languageSubtitle": "选择一种语言"
+    },
+    "languageNames": {
+        "pt": "葡萄牙语",
+        "en": "英语",
+        "es": "西班牙语",
+        "de": "德语",
+        "zh": "中文"
+    },
+    "common": {
+        "back": "返回",
+        "cancel": "取消"
+    }
+}

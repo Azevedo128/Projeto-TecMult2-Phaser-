@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { translate as t } from '../i18n';
 
 export class PauseMenu extends Scene
 {
@@ -15,13 +16,15 @@ export class PauseMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        this.events.once('language-changed', () => this.scene.restart());
+
         this.overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.52)
             .setInteractive();
 
         this.add.rectangle(width / 2, height / 2, 520, 520, 0x10131b, 0.88)
             .setStrokeStyle(5, 0xffffff, 0.85);
 
-        this.add.text(width / 2, height / 2 - 190, 'Menu', {
+        this.add.text(width / 2, height / 2 - 190, t(this, 'pause.title'), {
             fontFamily: 'Arial Black',
             fontSize: 52,
             color: '#ffffff',
@@ -30,19 +33,19 @@ export class PauseMenu extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        this.createTextButton(width / 2, height / 2 - 90, 'Continuar', () => {
+        this.createTextButton(width / 2, height / 2 - 90, t(this, 'pause.continue'), () => {
             this.resumeGame();
         });
 
-        this.createTextButton(width / 2, height / 2 - 10, 'Recomecar', () => {
+        this.createTextButton(width / 2, height / 2 - 10, t(this, 'pause.restart'), () => {
             this.restartLevel();
         });
 
-        this.createTextButton(width / 2, height / 2 + 70, 'Opcoes', () => {
+        this.createTextButton(width / 2, height / 2 + 70, t(this, 'pause.options'), () => {
             this.openOptions();
         });
 
-        this.createTextButton(width / 2, height / 2 + 150, 'Sair do Nivel', () => {
+        this.createTextButton(width / 2, height / 2 + 150, t(this, 'pause.exitLevel'), () => {
             this.exitLevel();
         });
 
