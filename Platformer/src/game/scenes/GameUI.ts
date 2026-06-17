@@ -1,4 +1,5 @@
 import { Scene, Textures } from 'phaser';
+import { playUiClick, playUiHover } from './UiSounds';
 
 export class GameUI
 {
@@ -68,6 +69,7 @@ export class GameUI
             .setInteractive({ useHandCursor: true });
 
         this.menuButton.on('pointerover', () => {
+            playUiHover(this.scene, 'game-ui-menu');
             this.menuButton?.setTexture('menu-settings-hover');
         });
 
@@ -76,6 +78,7 @@ export class GameUI
         });
 
         this.menuButton.on('pointerdown', () => {
+            playUiClick(this.scene);
             this.onOpenMenu?.();
         });
 

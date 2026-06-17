@@ -1,6 +1,7 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
 import { translate as t } from '../i18n';
+import { playUiClick, playUiHover } from './UiSounds';
 
 export class PauseMenu extends Scene
 {
@@ -70,18 +71,29 @@ export class PauseMenu extends Scene
         }).setOrigin(0.5);
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, `pause-${label}`);
+            }
+
             button.setFillStyle(active ? 0x2f8fdd : 0x1b1d26, 0.95);
             button.setStrokeStyle(4, active ? 0xfff176 : 0xffffff, active ? 1 : 0.8);
         };
 
         button.on('pointerover', () => setHover(true));
         button.on('pointerout', () => setHover(false));
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
 
         text.setInteractive({ useHandCursor: true });
         text.on('pointerover', () => setHover(true));
         text.on('pointerout', () => setHover(false));
-        text.on('pointerdown', onClick);
+        text.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
     }
 
     private resumeGame()

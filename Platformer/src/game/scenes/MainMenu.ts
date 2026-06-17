@@ -1,6 +1,7 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
 import { translate as t } from '../i18n';
+import { playUiClick, playUiHover } from './UiSounds';
 
 export class MainMenu extends Scene
 {
@@ -81,6 +82,7 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
 
         button.on('pointerover', () => {
+            playUiHover(this, `main-menu-${normalTexture}`);
             button.setTexture(hoverTexture);
         });
 
@@ -88,7 +90,10 @@ export class MainMenu extends Scene
             button.setTexture(normalTexture);
         });
 
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
     }
 
     closeCurrentPage()

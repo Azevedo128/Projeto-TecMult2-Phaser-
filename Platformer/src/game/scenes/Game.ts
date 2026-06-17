@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { createPlayerAnimations } from './PlayerAnimations';
 import { createLevel1 } from './Levels/level1';
 import { createLevel2 } from './Levels/level2';
+import { createLevel3 } from './Levels/level3';
 import { GameUI } from './GameUI';
 import { PlayerController } from './PlayerController';
 import { getPlayerCharacter } from './PlayerCharacters';
@@ -13,10 +14,11 @@ type BaseLevel = {
     worldHeight: number;
     spawnX: number;
     spawnY: number;
+    update?: () => void;
 };
 
 type LevelWithHazards = BaseLevel & {
-    hazards: Phaser.Physics.Arcade.StaticGroup;
+    hazards: Phaser.Types.Physics.Arcade.ArcadeColliderType;
 };
 
 function hasHazards(level: BaseLevel | LevelWithHazards): level is LevelWithHazards
@@ -37,6 +39,7 @@ export class Game extends Scene
     isPlayerDying = false;
     platformCollider?: Phaser.Physics.Arcade.Collider;
     hazardOverlap?: Phaser.Physics.Arcade.Collider;
+    levelUpdate?: () => void;
 
     constructor ()
     {
@@ -57,11 +60,16 @@ export class Game extends Scene
         }
 
         const selectedLevel = Number(this.registry.get('selectedLevel') ?? 1);
-        const level: BaseLevel | LevelWithHazards = selectedLevel === 2 ? createLevel2(this) : createLevel1(this);
+        const level: BaseLevel | LevelWithHazards = selectedLevel === 3
+            ? createLevel3(this)
+            : selectedLevel === 2
+                ? createLevel2(this)
+                : createLevel1(this);
 
         this.worldHeight = level.worldHeight;
         this.spawnX = level.spawnX;
         this.spawnY = level.spawnY;
+        this.levelUpdate = level.update;
         this.lives = this.maxLives;
 
         createPlayerAnimations(this);
@@ -91,6 +99,7 @@ export class Game extends Scene
 
     update ()
     {
+        this.levelUpdate?.();
         this.player.update();
         this.ui.update();
 
@@ -122,8 +131,7 @@ export class Game extends Scene
 
         if (this.lives <= 0)
         {
-            stopLevelMusic(this);
-            this.scene.start('GameOver');
+            this.openGameOver();
             return;
         }
 
@@ -154,8 +162,7 @@ export class Game extends Scene
     {
         if (this.lives <= 0)
         {
-            stopLevelMusic(this);
-            this.scene.start('GameOver');
+            this.openGameOver();
             return;
         }
 
@@ -198,6 +205,19 @@ export class Game extends Scene
 
         this.scene.launch('PauseMenu');
         this.scene.bringToTop('PauseMenu');
+        this.scene.pause('Game');
+    }
+
+    openGameOver()
+    {
+        if (this.scene.isActive('GameOver'))
+        {
+            return;
+        }
+
+        stopLevelMusic(this);
+        this.scene.launch('GameOver');
+        this.scene.bringToTop('GameOver');
         this.scene.pause('Game');
     }
 }

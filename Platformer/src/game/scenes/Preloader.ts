@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { getFrameKey, PLAYER_CHARACTERS, type PlayerAnimationName } from './PlayerCharacters';
+import { UI_CLICK_KEY, UI_HOVER_KEY } from './UiSounds';
 
 export class Preloader extends Scene
 {
@@ -84,6 +85,35 @@ export class Preloader extends Scene
         this.load.image('level2-fence-right', 'tilesets/level2/Fence (3).png');
         this.load.image('level2-spike', 'tilesets/level2/Spike.png');
 
+        this.load.image('level3-bg', 'tilesets/level3/BG.png');
+
+        for (let i = 1; i <= 16; i++)
+        {
+            this.load.image(`level3-tile-${i}`, `tilesets/level3/Tiles/Tile (${i}).png`);
+        }
+
+        for (let i = 1; i <= 4; i++)
+        {
+            this.load.image(`level3-bone-${i}`, `tilesets/level3/Tiles/Bone (${i}).png`);
+        }
+
+        for (let i = 1; i <= 10; i++)
+        {
+            this.load.image(`zombie-male-walk-${i}`, `enemies/zombies/male/Walk (${i}).png`);
+            this.load.image(`zombie-female-walk-${i}`, `enemies/zombies/female/Walk (${i}).png`);
+        }
+
+        this.load.image('level3-arrow-sign', 'tilesets/level3/Objects/ArrowSign.png');
+        this.load.image('level3-bush-1', 'tilesets/level3/Objects/Bush (1).png');
+        this.load.image('level3-bush-2', 'tilesets/level3/Objects/Bush (2).png');
+        this.load.image('level3-crate', 'tilesets/level3/Objects/Crate.png');
+        this.load.image('level3-dead-bush', 'tilesets/level3/Objects/DeadBush.png');
+        this.load.image('level3-sign', 'tilesets/level3/Objects/Sign.png');
+        this.load.image('level3-skeleton', 'tilesets/level3/Objects/Skeleton.png');
+        this.load.image('level3-tombstone-1', 'tilesets/level3/Objects/TombStone (1).png');
+        this.load.image('level3-tombstone-2', 'tilesets/level3/Objects/TombStone (2).png');
+        this.load.image('level3-tree', 'tilesets/level3/Objects/Tree.png');
+
         this.load.image('map-bg', 'tilesets/freetileset/BG/BG.png');
         this.load.image('menu-play', 'ui/buttons/play.png');
         this.load.image('menu-play-hover', 'ui/buttons/play-hover.png');
@@ -91,6 +121,8 @@ export class Preloader extends Scene
         this.load.image('menu-settings-hover', 'ui/buttons/settings-hover.png');
         this.load.image('menu-exit', 'ui/buttons/exit.png');
         this.load.image('menu-exit-hover', 'ui/buttons/exit-hover.png');
+        this.load.image('menu-restart', 'ui/buttons/restart.svg');
+        this.load.image('menu-restart-hover', 'ui/buttons/restart-hover.svg');
         this.load.image('menu-locked', 'ui/buttons/locked.png');
         this.load.image('flag-pt', 'ui/flags/pt.png');
         this.load.image('flag-en', 'ui/flags/gb-eng.png');
@@ -98,6 +130,8 @@ export class Preloader extends Scene
         this.load.image('flag-de', 'ui/flags/de.png');
         this.load.image('flag-cn', 'ui/flags/cn.png');
         this.load.audio('level-music', 'audio/Desert Dreams.mp3');
+        this.load.audio(UI_CLICK_KEY, 'audio/ui/click.ogg');
+        this.load.audio(UI_HOVER_KEY, 'audio/ui/hover.ogg');
 
 
         for (const character of PLAYER_CHARACTERS)

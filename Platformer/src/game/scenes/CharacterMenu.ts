@@ -2,6 +2,7 @@ import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
 import { translate as t } from '../i18n';
 import { createPlayerAnimations } from './PlayerAnimations';
+import { playUiClick, playUiHover } from './UiSounds';
 import {
     getAnimationKey,
     getFrameKey,
@@ -92,17 +93,28 @@ export class CharacterMenu extends Scene
         };
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, `character-${character.id}`);
+            }
+
             panel.setStrokeStyle(4, active ? 0xfff176 : 0xffffff, active ? 1 : 0.8);
             preview.setScale(character.menuScale * (active ? 1.08 : 1));
         };
 
         panel.on('pointerover', () => setHover(true));
         panel.on('pointerout', () => setHover(false));
-        panel.on('pointerdown', choose);
+        panel.on('pointerdown', () => {
+            playUiClick(this);
+            choose();
+        });
 
         preview.on('pointerover', () => setHover(true));
         preview.on('pointerout', () => setHover(false));
-        preview.on('pointerdown', choose);
+        preview.on('pointerdown', () => {
+            playUiClick(this);
+            choose();
+        });
     }
 
     private createMenuButton(
@@ -128,6 +140,7 @@ export class CharacterMenu extends Scene
         }).setOrigin(0.5);
 
         button.on('pointerover', () => {
+            playUiHover(this, `character-menu-${normalTexture}`);
             button.setTexture(hoverTexture);
         });
 
@@ -135,6 +148,9 @@ export class CharacterMenu extends Scene
             button.setTexture(normalTexture);
         });
 
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
     }
 }

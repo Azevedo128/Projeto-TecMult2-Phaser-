@@ -1,10 +1,10 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
 import { translate as t } from '../i18n';
+import { playUiClick, playUiHover } from './UiSounds';
 
 export class GameOver extends Scene
 {
-    background!: GameObjects.Image;
     title!: GameObjects.Text;
 
     constructor ()
@@ -16,14 +16,20 @@ export class GameOver extends Scene
     {
         const width = this.scale.width;
         const height = this.scale.height;
+        const panelWidth = Math.min(620, width * 0.82);
+        const panelHeight = 430;
+        const centerX = width / 2;
+        const centerY = height / 2;
 
         stopLevelMusic(this);
-        this.createBackground(width, height);
 
-        this.add.rectangle(width / 2, height / 2, Math.min(620, width * 0.82), 430, 0x000000, 0.38)
+        this.add.rectangle(centerX, centerY, width, height, 0x000000, 0.56)
+            .setInteractive();
+
+        this.add.rectangle(centerX, centerY, panelWidth, panelHeight, 0x10131b, 0.92)
             .setStrokeStyle(5, 0xffffff, 0.75);
 
-        this.title = this.add.text(width / 2, height * 0.32, t(this, 'gameOver.title'), {
+        this.title = this.add.text(centerX, centerY - 130, t(this, 'gameOver.title'), {
             fontFamily: 'Arial Black',
             fontSize: 64,
             color: '#ffffff',
@@ -32,27 +38,21 @@ export class GameOver extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        const buttonY = height * 0.55;
+        const buttonY = centerY + 45;
         const spacing = Math.min(190, width * 0.24);
 
-        this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', t(this, 'gameOver.restart'), () => {
+        this.createMenuButton(centerX - spacing, buttonY, 'menu-restart', 'menu-restart-hover', t(this, 'gameOver.restart'), () => {
+            this.scene.stop('Game');
+            this.scene.stop();
             this.scene.start('Game');
         });
 
-        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', t(this, 'gameOver.mainMenu'), () => {
+        this.createMenuButton(centerX + spacing, buttonY, 'menu-exit', 'menu-exit-hover', t(this, 'gameOver.mainMenu'), () => {
+            stopLevelMusic(this);
+            this.scene.stop('Game');
+            this.scene.stop();
             this.scene.start('MainMenu');
         });
-    }
-
-    private createBackground(width: number, height: number)
-    {
-        this.background = this.add.image(width / 2, height / 2, 'map-bg');
-
-        const scaleX = width / this.background.width;
-        const scaleY = height / this.background.height;
-        const scale = Math.max(scaleX, scaleY);
-
-        this.background.setScale(scale);
     }
 
     private createMenuButton(
@@ -79,6 +79,7 @@ export class GameOver extends Scene
         }).setOrigin(0.5);
 
         button.on('pointerover', () => {
+            playUiHover(this, `game-over-${normalTexture}`);
             button.setTexture(hoverTexture);
         });
 
@@ -86,6 +87,9 @@ export class GameOver extends Scene
             button.setTexture(normalTexture);
         });
 
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
     }
 }

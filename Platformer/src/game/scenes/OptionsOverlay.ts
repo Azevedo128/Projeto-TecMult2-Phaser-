@@ -8,6 +8,7 @@ import {
     translate as t,
     type LanguageOption
 } from '../i18n';
+import { playUiClick, playUiHover } from './UiSounds';
 
 function clamp(value: number, min: number, max: number)
 {
@@ -133,11 +134,17 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, `checkbox-${label}`);
+            }
+
             box.setFillStyle(active ? 0x2f8fdd : 0xffffff, active ? 0.25 : 0.06);
             box.setStrokeStyle(5, active ? 0xfff176 : 0xffffff, active ? 1 : 0.9);
         };
 
         const click = () => {
+            playUiClick(this);
             onClick();
         };
 
@@ -172,18 +179,29 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, `text-button-${label}`);
+            }
+
             button.setFillStyle(active ? 0x2f8fdd : 0x1b1d26, 0.95);
             button.setStrokeStyle(4, active ? 0xfff176 : 0xffffff, active ? 1 : 0.8);
         };
 
         button.on('pointerover', () => setHover(true));
         button.on('pointerout', () => setHover(false));
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
 
         text.setInteractive({ useHandCursor: true });
         text.on('pointerover', () => setHover(true));
         text.on('pointerout', () => setHover(false));
-        text.on('pointerdown', onClick);
+        text.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
 
         return text;
     }
@@ -294,18 +312,29 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, `volume-step-${label}`);
+            }
+
             button.setFillStyle(active ? 0x2f8fdd : 0x1b1d26, 0.95);
             button.setStrokeStyle(4, active ? 0xfff176 : 0xffffff, active ? 1 : 0.85);
         };
 
         button.on('pointerover', () => setHover(true));
         button.on('pointerout', () => setHover(false));
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
 
         text.setInteractive({ useHandCursor: true });
         text.on('pointerover', () => setHover(true));
         text.on('pointerout', () => setHover(false));
-        text.on('pointerdown', onClick);
+        text.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
     }
 
     private changeVolume(amount: number, sliderX: number, sliderY: number, sliderWidth: number)
@@ -366,6 +395,7 @@ export class OptionsOverlay extends Scene
         };
 
         this.languageBar.on('pointerover', () => {
+            playUiHover(this, 'language-selector');
             this.languageBar.setStrokeStyle(4, 0xfff176, 1);
         });
 
@@ -373,11 +403,20 @@ export class OptionsOverlay extends Scene
             this.languageBar.setStrokeStyle(4, 0xffffff, 0.85);
         });
 
-        this.languageBar.on('pointerdown', toggle);
+        this.languageBar.on('pointerdown', () => {
+            playUiClick(this);
+            toggle();
+        });
         this.languageLabel.setInteractive({ useHandCursor: true });
-        this.languageLabel.on('pointerdown', toggle);
+        this.languageLabel.on('pointerdown', () => {
+            playUiClick(this);
+            toggle();
+        });
         this.languageArrow.setInteractive({ useHandCursor: true });
-        this.languageArrow.on('pointerdown', toggle);
+        this.languageArrow.on('pointerdown', () => {
+            playUiClick(this);
+            toggle();
+        });
     }
 
     private toggleLanguageMenu()
@@ -468,6 +507,7 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const chooseLanguage = () => {
+            playUiClick(this);
             setCurrentLanguage(this, language.id);
             this.languageChanged = true;
             this.updateTranslatedText();
@@ -475,6 +515,11 @@ export class OptionsOverlay extends Scene
         };
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, `language-${language.id}`);
+            }
+
             hitArea.setFillStyle(active || isSelected ? 0x2f8fdd : 0x000000, active ? 0.24 : isSelected ? 0.16 : 0.01);
             hitArea.setStrokeStyle(active || isSelected ? 3 : 0, active ? 0xffffff : 0xffd451, active || isSelected ? 1 : 0);
         };
@@ -512,18 +557,29 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const setHover = (active: boolean) => {
+            if (active)
+            {
+                playUiHover(this, 'language-cancel');
+            }
+
             button.setFillStyle(active ? 0x3a3937 : 0x2b2a28, 1);
             button.setStrokeStyle(4, active ? 0xffd451 : 0x050505, 1);
         };
 
         button.on('pointerover', () => setHover(true));
         button.on('pointerout', () => setHover(false));
-        button.on('pointerdown', () => this.closeLanguageMenu());
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            this.closeLanguageMenu();
+        });
 
         label.setInteractive({ useHandCursor: true });
         label.on('pointerover', () => setHover(true));
         label.on('pointerout', () => setHover(false));
-        label.on('pointerdown', () => this.closeLanguageMenu());
+        label.on('pointerdown', () => {
+            playUiClick(this);
+            this.closeLanguageMenu();
+        });
 
         this.languageOptions.push(button, label);
     }

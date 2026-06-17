@@ -1,6 +1,7 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
 import { translate as t } from '../i18n';
+import { playUiClick, playUiHover } from './UiSounds';
 
 export class LevelMenu extends Scene
 {
@@ -58,7 +59,10 @@ export class LevelMenu extends Scene
             this.scene.start('Game');
         });
 
-        this.createLevelButton(width / 2 + spacing, levelY, t(this, 'levels.level3'), 'menu-locked', 'menu-locked', false, () => {});
+        this.createLevelButton(width / 2 + spacing, levelY, t(this, 'levels.level3'), 'menu-play', 'menu-play-hover', true, () => {
+            this.registry.set('selectedLevel', 3);
+            this.scene.start('Game');
+        });
 
         this.createMenuButton(width / 2, height * 0.82, 'menu-exit', 'menu-exit-hover', t(this, 'common.back'), () => {
             this.scene.start('CharacterMenu');
@@ -83,6 +87,7 @@ export class LevelMenu extends Scene
             button.setInteractive({ useHandCursor: true });
 
             button.on('pointerover', () => {
+                playUiHover(this, `level-button-${label}`);
                 button.setTexture(hoverTexture);
             });
 
@@ -90,7 +95,10 @@ export class LevelMenu extends Scene
                 button.setTexture(normalTexture);
             });
 
-            button.on('pointerdown', onClick);
+            button.on('pointerdown', () => {
+                playUiClick(this);
+                onClick();
+            });
         }
         else
         {
@@ -142,6 +150,7 @@ export class LevelMenu extends Scene
         }).setOrigin(0.5);
 
         button.on('pointerover', () => {
+            playUiHover(this, `level-menu-${normalTexture}`);
             button.setTexture(hoverTexture);
         });
 
@@ -149,6 +158,9 @@ export class LevelMenu extends Scene
             button.setTexture(normalTexture);
         });
 
-        button.on('pointerdown', onClick);
+        button.on('pointerdown', () => {
+            playUiClick(this);
+            onClick();
+        });
     }
 }

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff62e"/>
+      <stop offset="0.5" stop-color="#ffd331"/>
+      <stop offset="1" stop-color="#ff8a16"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#9b5c1e"/>
+      <stop offset="1" stop-color="#70400f"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffbe6"/>
+      <stop offset="1" stop-color="#ffd83d"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="106" fill="url(#gold)"/>
+  <circle cx="128" cy="128" r="94" fill="none" stroke="#ffff36" stroke-width="9"/>
+  <circle cx="128" cy="128" r="78" fill="url(#wood)" stroke="#4d2a0b" stroke-width="5"/>
+  <path d="M56 126h144" stroke="#5b310d" stroke-width="4" opacity="0.7"/>
+  <path d="M88 96h80" stroke="#5b310d" stroke-width="4" opacity="0.5"/>
+  <path d="M76 154h100" stroke="#5b310d" stroke-width="4" opacity="0.5"/>
+  <path d="M104 70l6 24M170 78l-10 21M62 176l18-16M202 54l-16 18" stroke="#ff6b1a" stroke-width="3" opacity="0.7"/>
+  <path d="M165 91a54 54 0 1 0 16 53" fill="none" stroke="#ff8a16" stroke-width="31" stroke-linecap="round"/>
+  <path d="M165 91a54 54 0 1 0 16 53" fill="none" stroke="url(#arrow)" stroke-width="23" stroke-linecap="round"/>
+  <path d="M167 58l1 54-50-19z" fill="#ff8a16"/>
+  <path d="M161 65l1 40-37-14z" fill="url(#arrow)"/>
+</svg>
