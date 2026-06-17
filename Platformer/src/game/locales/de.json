@@ -34,6 +34,13 @@
         "restart": "Neustarten",
         "mainMenu": "Hauptmenü"
     },
+    "levelComplete": {
+        "title": "Level Abgeschlossen",
+        "subtitle": "Du hast dieses Level geschafft. Was moechtest du tun?",
+        "retry": "Nochmal Versuchen",
+        "next": "Naechstes Level",
+        "levelMenu": "Level Menu"
+    },
     "options": {
         "title": "Optionen",
         "fullscreen": "Vollbild",

@@ -34,6 +34,13 @@
         "restart": "Restart",
         "mainMenu": "Main Menu"
     },
+    "levelComplete": {
+        "title": "Level Complete",
+        "subtitle": "You cleared this level. What do you want to do?",
+        "retry": "Try Again",
+        "next": "Next Level",
+        "levelMenu": "Level Menu"
+    },
     "options": {
         "title": "Options",
         "fullscreen": "Fullscreen",

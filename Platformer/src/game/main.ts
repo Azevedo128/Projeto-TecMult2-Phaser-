@@ -2,6 +2,7 @@ import { Boot } from './scenes/Boot';
 import { CharacterMenu } from './scenes/CharacterMenu';
 import { GameOver } from './scenes/GameOver';
 import { Game as MainGame } from './scenes/Game';
+import { LevelComplete } from './scenes/LevelComplete';
 import { LevelMenu } from './scenes/LevelMenu';
 import { MainMenu } from './scenes/MainMenu';
 import { OptionsOverlay } from './scenes/OptionsOverlay';
@@ -35,6 +36,7 @@ const config: Phaser.Types.Core.GameConfig = {
         MainGame,
         PauseMenu,
         OptionsOverlay,
+        LevelComplete,
         GameOver
     ]
 };

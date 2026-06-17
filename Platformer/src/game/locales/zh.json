@@ -34,6 +34,13 @@
         "restart": "重新开始",
         "mainMenu": "主菜单"
     },
+    "levelComplete": {
+        "title": "关卡完成",
+        "subtitle": "你通过了这个关卡。接下来要做什么?",
+        "retry": "再试一次",
+        "next": "下一关",
+        "levelMenu": "关卡菜单"
+    },
     "options": {
         "title": "选项",
         "fullscreen": "全屏",

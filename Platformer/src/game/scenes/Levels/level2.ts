@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { createFinishLine } from './finishLine';
 
 const TILE_SIZE = 128;
 const BACKGROUND_DEPTH = -35;
@@ -69,14 +70,23 @@ export function createLevel2(scene: Scene)
 
     const platforms = scene.physics.add.staticGroup();
     const hazards = scene.physics.add.staticGroup();
+    const finish = scene.physics.add.staticGroup();
 
     createPlatforms(scene, platforms, worldHeight, groundY);
     createHazards(scene, hazards, groundY, worldWidth, worldHeight);
     createDecorations(scene, groundY);
+    createFinishLine(scene, finish, 13952, surfaceY(groundY), 'level2-bg-6', {
+        markerTexture: 'level2-bg-6',
+        markerScale: 1.15,
+        markerOffsetX: -120,
+        postColor: 0x0f1118,
+        accentColor: 0xffd500
+    });
 
     return {
         platforms,
         hazards,
+        finish,
         worldWidth,
         worldHeight,
         spawnX: 180,

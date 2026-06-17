@@ -10,6 +10,7 @@ import { playLevelMusic, stopLevelMusic } from './AudioManager';
 
 type BaseLevel = {
     platforms: Phaser.Physics.Arcade.StaticGroup;
+    finish?: Phaser.Types.Physics.Arcade.ArcadeColliderType;
     worldWidth: number;
     worldHeight: number;
     spawnX: number;
@@ -37,8 +38,10 @@ export class Game extends Scene
     spawnY = 0;
     worldHeight = 0;
     isPlayerDying = false;
+    isLevelComplete = false;
     platformCollider?: Phaser.Physics.Arcade.Collider;
     hazardOverlap?: Phaser.Physics.Arcade.Collider;
+    finishOverlap?: Phaser.Physics.Arcade.Collider;
     levelUpdate?: () => void;
 
     constructor ()
@@ -51,6 +54,12 @@ export class Game extends Scene
         this.camera = this.cameras.main;
         this.camera.setZoom(0.8);
         this.camera.setBackgroundColor(0x00ff00);
+        this.isPlayerDying = false;
+        this.isLevelComplete = false;
+        this.platformCollider = undefined;
+        this.hazardOverlap = undefined;
+        this.finishOverlap = undefined;
+        this.levelUpdate = undefined;
         this.physics.world.drawDebug = Boolean(this.registry.get('showHitboxes'));
         playLevelMusic(this);
 
@@ -84,6 +93,13 @@ export class Game extends Scene
         {
             this.hazardOverlap = this.physics.add.overlap(this.player.sprite, level.hazards, () => {
                 this.startObstacleDeath();
+            });
+        }
+
+        if (level.finish)
+        {
+            this.finishOverlap = this.physics.add.overlap(this.player.sprite, level.finish, () => {
+                this.completeLevel();
             });
         }
 
@@ -182,6 +198,26 @@ export class Game extends Scene
         {
             this.hazardOverlap.active = active;
         }
+
+        if (this.finishOverlap)
+        {
+            this.finishOverlap.active = active;
+        }
+    }
+
+    completeLevel()
+    {
+        if (this.isLevelComplete || this.isPlayerDying || this.scene.isActive('LevelComplete'))
+        {
+            return;
+        }
+
+        this.isLevelComplete = true;
+        this.finishOverlap?.destroy();
+
+        this.scene.launch('LevelComplete');
+        this.scene.bringToTop('LevelComplete');
+        this.scene.pause('Game');
     }
 
     getDeathAnimationEnabled()

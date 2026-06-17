@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { createFinishLine } from './finishLine';
 
 const TILE_SIZE = 128;
 const BACKGROUND_DEPTH = -35;
@@ -84,14 +85,23 @@ export function createLevel3(scene: Scene)
 
     const platforms = scene.physics.add.staticGroup();
     const hazards = scene.physics.add.group();
+    const finish = scene.physics.add.staticGroup();
 
     createPlatforms(scene, platforms, worldHeight, groundY);
     createHazards(scene, hazards, platforms, groundY);
     createDecorations(scene, groundY);
+    createFinishLine(scene, finish, 15552, surfaceY(groundY - 128), 'level3-arrow-sign', {
+        markerTexture: 'level3-arrow-sign',
+        markerScale: 1.05,
+        markerOffsetX: -125,
+        postColor: 0x271815,
+        accentColor: 0x8b1f2e
+    });
 
     return {
         platforms,
         hazards,
+        finish,
         worldWidth,
         worldHeight,
         spawnX: 180,
@@ -213,7 +223,7 @@ function getDirtTexture(tile: number, tileCount: number, row: number)
         return row % 2 === 0 ? 'level3-tile-6' : 'level3-tile-13';
     }
 
-    return (tile + row) % 4 === 0 ? 'level3-tile-10' : 'level3-tile-5';
+    return 'level3-tile-5';
 }
 
 function createFloatingPlatform(

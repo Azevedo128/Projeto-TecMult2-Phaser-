@@ -121,8 +121,8 @@ export class Preloader extends Scene
         this.load.image('menu-settings-hover', 'ui/buttons/settings-hover.png');
         this.load.image('menu-exit', 'ui/buttons/exit.png');
         this.load.image('menu-exit-hover', 'ui/buttons/exit-hover.png');
-        this.load.image('menu-restart', 'ui/buttons/restart.svg');
-        this.load.image('menu-restart-hover', 'ui/buttons/restart-hover.svg');
+        this.load.image('menu-restart', 'ui/buttons/restart.png');
+        this.load.image('menu-restart-hover', 'ui/buttons/restart-hover.png');
         this.load.image('menu-locked', 'ui/buttons/locked.png');
         this.load.image('flag-pt', 'ui/flags/pt.png');
         this.load.image('flag-en', 'ui/flags/gb-eng.png');
