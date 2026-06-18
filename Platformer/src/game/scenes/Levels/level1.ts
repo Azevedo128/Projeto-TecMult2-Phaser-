@@ -218,7 +218,7 @@ function createDecorations(scene: Scene, groundY: number)
     const decorations: DecorationSpec[] = [
         { x: 340, y: floorY, texture: 'sign-1', scale: 0.95 },
         { x: 620, y: floorY, texture: 'tree-1', scale: 1.45 },
-        { x: 850, y: floorY, texture: 'tree-2', scale: 1.2, flipX: true },
+        { x: 820, y: floorY, texture: 'tree-2', scale: 1.2, flipX: true },
         { x: 1120, y: floorY, texture: 'bush-1', scale: 1.35 },
         { x: 1310, y: floorY, texture: 'mushroom-1', scale: 1 },
 
@@ -228,7 +228,7 @@ function createDecorations(scene: Scene, groundY: number)
         { x: 2870, y: surfaceY(groundY - 180), texture: 'mushroom-2', scale: 0.85 },
         { x: 3430, y: surfaceY(groundY - 310), texture: 'crate', scale: 0.8 },
 
-        { x: 3860, y: highFloorY, texture: 'tree-2', scale: 1.35 },
+        { x: 3890, y: highFloorY, texture: 'tree-2', scale: 1.35 },
         { x: 4140, y: highFloorY, texture: 'tree-3', scale: 1.15, flipX: true },
         { x: 4380, y: highFloorY, texture: 'bush-3', scale: 1.3 },
         { x: 4550, y: highFloorY, texture: 'mushroom-1', scale: 0.95 },

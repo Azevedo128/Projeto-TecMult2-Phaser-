@@ -390,9 +390,9 @@ function createDecorations(scene: Scene, groundY: number)
     createFence(scene, 5700, floorY, 5);
     createFence(scene, 8610, highFloorY, 5);
 
-    addWallPanel(scene, 2624, surfaceY(groundY - 190), 'level2-bg-1');
-    addWallPanel(scene, 4928, surfaceY(groundY - 300), 'level2-bg-6');
-    addWallPanel(scene, 7424, surfaceY(groundY - 340), 'level2-bg-5');
+    addDoor(scene, 2624, surfaceY(groundY - 190), 'level2-door-locked');
+    addDoor(scene, 4928, surfaceY(groundY - 300), 'level2-door-locked');
+    addDoor(scene, 7424, surfaceY(groundY - 340), 'level2-door-locked');
     addWallPanel(scene, 10880, surfaceY(groundY - 180), 'level2-bg-3');
 }
 
@@ -415,6 +415,14 @@ function addWallPanel(scene: Scene, x: number, y: number, texture: string)
     scene.add.image(x, y, texture)
         .setOrigin(0.5, 1)
         .setDisplaySize(TILE_SIZE, TILE_SIZE)
+        .setDepth(DECORATION_DEPTH);
+}
+
+function addDoor(scene: Scene, x: number, y: number, texture: string)
+{
+    scene.add.image(x, y, texture)
+        .setOrigin(0.5, 1)
+        .setDisplaySize(TILE_SIZE, 1.5*TILE_SIZE)
         .setDepth(DECORATION_DEPTH);
 }
 

@@ -84,6 +84,7 @@ export class Preloader extends Scene
         this.load.image('level2-fence-middle', 'tilesets/level2/Fence (2).png');
         this.load.image('level2-fence-right', 'tilesets/level2/Fence (3).png');
         this.load.image('level2-spike', 'tilesets/level2/Spike.png');
+        this.load.image('level2-door-locked', 'tilesets/level2/DoorLocked.png');
 
         this.load.image('level3-bg', 'tilesets/level3/BG.png');
 
