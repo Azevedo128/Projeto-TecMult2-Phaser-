@@ -25,13 +25,7 @@ export const LANGUAGE_OPTIONS: LanguageOption[] = [
     { id: 'zh', flagKey: 'flag-cn' }
 ];
 
-const dictionaries: Record<LanguageId, Dictionary> = {
-    pt,
-    en,
-    es,
-    de,
-    zh
-};
+const dictionaries: Record<LanguageId, Dictionary> = {pt,en,es,de,zh};
 
 const legacyLanguageIds: Record<string, LanguageId> = {
     Portugues: 'pt',
