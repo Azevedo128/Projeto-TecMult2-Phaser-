@@ -171,7 +171,7 @@ function createPlatforms(
         { kind: 'floating', x: 12416, y: groundY - 300, tiles: 2 },
         { kind: 'ground', x: 12928, y: groundY, tiles: 5 },
         { kind: 'floating', x: 13824, y: groundY - 180, tiles: 2 },
-        { kind: 'ground', x: 14336, y: groundY - 128, tiles: 11 }
+        { kind: 'ground', x: 14848, y: groundY - 128, tiles: 7 }
     ];
 
     for (const platform of layout)
@@ -321,7 +321,7 @@ function createHazards(
         { kind: 'female', x: 8580, y: floorY, leftBound: 8500, rightBound: 8800, speed: 52, direction: -1 },
         { kind: 'male', x: 11540, y: highFloorY, leftBound: 11320, rightBound: 11840, speed: 58, direction: 1 },
         { kind: 'female', x: 13220, y: floorY, leftBound: 13060, rightBound: 13460, speed: 60, direction: -1 },
-        { kind: 'male', x: 14900, y: highFloorY, leftBound: 14540, rightBound: 15560, speed: 64, direction: 1 }
+        { kind: 'male', x: 14980, y: highFloorY, leftBound: 14900, rightBound: 15240, speed: 64, direction: 1 }
     ];
 
     for (const zombie of zombies)
@@ -497,9 +497,7 @@ function createDecorations(scene: Scene, groundY: number)
         { x: 13420, y: floorY, texture: 'level3-bush-1', scale: 1.15 },
         { x: 13880, y: surfaceY(groundY - 180), texture: 'level3-tombstone-2', scale: 0.95 },
 
-        { x: 14430, y: highFloorY, texture: 'level3-tree', scale: 1.05, flipX: true },
-        { x: 14700, y: highFloorY, texture: 'level3-skeleton', scale: 1.05 },
-        { x: 14840, y: highFloorY, texture: 'level3-bone-1', scale: 0.48, alpha: 0.75 },
+        { x: 14880, y: highFloorY, texture: 'level3-bone-1', scale: 0.48, alpha: 0.75 },
         { x: 15120, y: highFloorY, texture: 'level3-sign', scale: 1.05 },
         { x: 15500, y: highFloorY, texture: 'level3-bush-2', scale: 1.1 }
     ];

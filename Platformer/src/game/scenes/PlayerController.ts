@@ -19,8 +19,8 @@ export class PlayerController
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private jumpCount = 0;
     private maxJumps = 2;
-    private jumpForce = -500;
-    private moveSpeed = 250;
+    private jumpForce = -600;
+    private moveSpeed = 300;
     private isDying = false;
 
     private wasd: {

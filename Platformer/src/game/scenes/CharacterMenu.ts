@@ -2,6 +2,7 @@ import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
 import { translate as t } from '../i18n';
 import { createPlayerAnimations } from './PlayerAnimations';
+import { restartSceneOnResize } from './ResizeRestart';
 import { playUiClick, playUiHover } from './UiSounds';
 import {
     getAnimationKey,
@@ -25,6 +26,7 @@ export class CharacterMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        restartSceneOnResize(this);
         stopLevelMusic(this);
         createPlayerAnimations(this);
         this.createBackground(width, height);

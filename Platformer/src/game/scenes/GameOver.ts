@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { restartSceneOnResize } from './ResizeRestart';
 import { translate as t } from '../i18n';
 import { playUiClick, playUiHover } from './UiSounds';
 
@@ -21,6 +22,7 @@ export class GameOver extends Scene
         const centerX = width / 2;
         const centerY = height / 2;
 
+        restartSceneOnResize(this);
         stopLevelMusic(this);
 
         this.add.rectangle(centerX, centerY, width, height, 0x000000, 0.56)

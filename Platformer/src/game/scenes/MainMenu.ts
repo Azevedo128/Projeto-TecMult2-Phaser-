@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { restartSceneOnResize } from './ResizeRestart';
 import { translate as t } from '../i18n';
 import { playUiClick, playUiHover } from './UiSounds';
 
@@ -19,6 +20,7 @@ export class MainMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        restartSceneOnResize(this);
         this.events.once('language-changed', () => this.scene.restart());
 
         stopLevelMusic(this);

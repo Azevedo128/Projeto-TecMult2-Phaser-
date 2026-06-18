@@ -1,11 +1,13 @@
 import { Scene } from 'phaser';
 
 const FINISH_DEPTH = 4;
+const PLAYER_PASS_WIDTH = 58;
 
 type FinishLineOptions = {
     height?: number;
     width?: number;
     triggerWidth?: number;
+    triggerOffsetX?: number;
     checkerSize?: number;
     postColor?: number;
     accentColor?: number;
@@ -27,7 +29,8 @@ export function createFinishLine(
     const height = options.height ?? 300;
     const width = options.width ?? 96;
     const checkerSize = options.checkerSize ?? 24;
-    const triggerWidth = options.triggerWidth ?? width + 34;
+    const triggerWidth = options.triggerWidth ?? 14;
+    const triggerOffsetX = options.triggerOffsetX ?? width / 2 + PLAYER_PASS_WIDTH + triggerWidth / 2;
     const postColor = options.postColor ?? 0x2f241a;
     const accentColor = options.accentColor ?? 0xf3cf62;
     const topY = floorY - height;
@@ -47,7 +50,7 @@ export function createFinishLine(
     createCheckeredLine(scene, x, floorY, height, checkerSize);
     createFinishMarker(scene, x, floorY, options);
 
-    const trigger = scene.physics.add.staticImage(x, centerY, triggerTexture);
+    const trigger = scene.physics.add.staticImage(x + triggerOffsetX, centerY, triggerTexture);
 
     trigger.setVisible(false);
     trigger.setDisplaySize(triggerWidth, height);

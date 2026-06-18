@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { getSavedVolume, setSavedVolume } from './AudioManager';
+import { restartSceneOnResize } from './ResizeRestart';
 import {
     getCurrentLanguage,
     getLanguageName,
@@ -30,7 +31,6 @@ export class OptionsOverlay extends Scene
     volumeHandle!: GameObjects.Rectangle;
     languageLabel!: GameObjects.Text;
     languageBar!: GameObjects.Rectangle;
-    languageArrow!: GameObjects.Text;
     backButtonLabel!: GameObjects.Text;
     languageOptions: GameObjects.GameObject[] = [];
     languageMenuOpen = false;
@@ -45,6 +45,7 @@ export class OptionsOverlay extends Scene
     create (data: { returnScene?: string } = {})
     {
         this.returnScene = data.returnScene ?? 'PauseMenu';
+        restartSceneOnResize(this, () => ({ returnScene: this.returnScene }));
 
         const width = this.scale.width;
         const height = this.scale.height;
@@ -381,15 +382,6 @@ export class OptionsOverlay extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        this.languageArrow = this.add.text(x + width / 2 - 34, y, 'v', {
-            fontFamily: 'Arial Black',
-            fontSize: 28,
-            color: '#ffffff',
-            stroke: '#000000',
-            strokeThickness: 5,
-            align: 'center'
-        }).setOrigin(0.5);
-
         const toggle = () => {
             this.toggleLanguageMenu();
         };
@@ -409,11 +401,6 @@ export class OptionsOverlay extends Scene
         });
         this.languageLabel.setInteractive({ useHandCursor: true });
         this.languageLabel.on('pointerdown', () => {
-            playUiClick(this);
-            toggle();
-        });
-        this.languageArrow.setInteractive({ useHandCursor: true });
-        this.languageArrow.on('pointerdown', () => {
             playUiClick(this);
             toggle();
         });
@@ -484,7 +471,6 @@ export class OptionsOverlay extends Scene
         this.createLanguageCancelButton(centerX, centerY + panelHeight / 2 - 42);
 
         this.languageMenuOpen = true;
-        this.languageArrow.setText('^');
     }
 
     private createLanguageChoice(language: LanguageOption, x: number, y: number)
@@ -593,7 +579,6 @@ export class OptionsOverlay extends Scene
 
         this.languageOptions = [];
         this.languageMenuOpen = false;
-        this.languageArrow?.setText('v');
     }
 
     private toggleFullscreen()

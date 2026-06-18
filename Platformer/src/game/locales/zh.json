@@ -20,7 +20,11 @@
         "level1": "关卡 1",
         "level2": "关卡 2",
         "level3": "关卡 3",
+        "viewMaps": "查看地图",
         "locked": "已锁定"
+    },
+    "mapViewer": {
+        "title": "完整地图 - {{level}}"
     },
     "pause": {
         "title": "菜单",

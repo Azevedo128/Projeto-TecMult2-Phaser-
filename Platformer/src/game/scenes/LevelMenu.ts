@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { restartSceneOnResize } from './ResizeRestart';
 import { translate as t } from '../i18n';
 import { playUiClick, playUiHover } from './UiSounds';
 
@@ -19,6 +20,7 @@ export class LevelMenu extends Scene
         const width = this.scale.width;
         const height = this.scale.height;
 
+        restartSceneOnResize(this);
         stopLevelMusic(this);
         this.background = this.add.image(width / 2, height / 2, 'map-bg');
 
@@ -64,7 +66,14 @@ export class LevelMenu extends Scene
             this.scene.start('Game');
         });
 
-        this.createMenuButton(width / 2, height * 0.82, 'menu-exit', 'menu-exit-hover', t(this, 'common.back'), () => {
+        const bottomY = height * 0.82;
+        const bottomSpacing = Math.min(170, width * 0.18);
+
+        this.createMenuButton(width / 2 - bottomSpacing / 2, bottomY, 'menu-settings', 'menu-settings-hover', t(this, 'levels.viewMaps'), () => {
+            this.scene.start('MapViewer');
+        });
+
+        this.createMenuButton(width / 2 + bottomSpacing / 2, bottomY, 'menu-exit', 'menu-exit-hover', t(this, 'common.back'), () => {
             this.scene.start('CharacterMenu');
         });
     }

@@ -20,7 +20,11 @@
         "level1": "Level 1",
         "level2": "Level 2",
         "level3": "Level 3",
+        "viewMaps": "View Maps",
         "locked": "Locked"
+    },
+    "mapViewer": {
+        "title": "Full Map - {{level}}"
     },
     "pause": {
         "title": "Menu",

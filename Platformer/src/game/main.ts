@@ -5,6 +5,7 @@ import { Game as MainGame } from './scenes/Game';
 import { LevelComplete } from './scenes/LevelComplete';
 import { LevelMenu } from './scenes/LevelMenu';
 import { MainMenu } from './scenes/MainMenu';
+import { MapViewer } from './scenes/MapViewer';
 import { OptionsOverlay } from './scenes/OptionsOverlay';
 import { PauseMenu } from './scenes/PauseMenu';
 import { AUTO, Game, Scale } from 'phaser';
@@ -19,7 +20,7 @@ const config: Phaser.Types.Core.GameConfig = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 550 },
+            gravity: { y: 680 },
             debug: true
         }
     },
@@ -33,6 +34,7 @@ const config: Phaser.Types.Core.GameConfig = {
         MainMenu,
         CharacterMenu,
         LevelMenu,
+        MapViewer,
         MainGame,
         PauseMenu,
         OptionsOverlay,

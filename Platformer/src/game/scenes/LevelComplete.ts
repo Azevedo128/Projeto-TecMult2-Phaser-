@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { restartSceneOnResize } from './ResizeRestart';
 import { translate as t } from '../i18n';
 import { playUiClick, playUiHover } from './UiSounds';
 
@@ -25,6 +26,7 @@ export class LevelComplete extends Scene
         const selectedLevel = Number(this.registry.get('selectedLevel') ?? 1);
         const hasNextLevel = selectedLevel < LAST_LEVEL;
 
+        restartSceneOnResize(this);
         this.add.rectangle(centerX, centerY, width, height, 0x000000, 0.56)
             .setInteractive();
 

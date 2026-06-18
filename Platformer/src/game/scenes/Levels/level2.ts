@@ -175,7 +175,8 @@ function createPlatforms(
         { kind: 'floating', x: 11328, y: groundY - 320, tiles: 2 },
         { kind: 'ground', x: 11968, y: groundY - 128, tiles: 5 },
 
-        { kind: 'ground', x: 12992, y: groundY, tiles: 9 }
+        { kind: 'ground', x: 12992, y: groundY, tiles: 1 },
+        { kind: 'ground', x: 13632, y: groundY, tiles: 5 }
     ];
 
     for (const platform of layout)
@@ -314,8 +315,7 @@ function createHazards(
         { kind: 'spike', x: 6272, y: groundY },
         { kind: 'spike', x: 8896, y: groundY - 128 },
         { kind: 'spike', x: 9152, y: groundY - 128 },
-        { kind: 'spike', x: 12224, y: groundY - 128 },
-        { kind: 'spike', x: 13440, y: groundY }
+        { kind: 'spike', x: 12224, y: groundY - 128 }
     ];
 
     for (const hazard of hazardsLayout)
@@ -389,7 +389,6 @@ function createDecorations(scene: Scene, groundY: number)
     createFence(scene, 3860, highFloorY, 4);
     createFence(scene, 5700, floorY, 5);
     createFence(scene, 8610, highFloorY, 5);
-    createFence(scene, 13090, floorY, 6);
 
     addWallPanel(scene, 2624, surfaceY(groundY - 190), 'level2-bg-1');
     addWallPanel(scene, 4928, surfaceY(groundY - 300), 'level2-bg-6');

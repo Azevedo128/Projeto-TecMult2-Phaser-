@@ -44,10 +44,6 @@ export function createLevel1(scene: Scene)
     createPlatforms(scene, platforms, worldHeight, groundY);
     createDecorations(scene, groundY);
     createFinishLine(scene, finish, 13632, surfaceY(groundY), 'sign-2', {
-        markerTexture: 'sign-2',
-        markerScale: 1.05,
-        markerOffsetX: -120,
-        markerFlipX: true,
         postColor: 0x6b3f1f,
         accentColor: 0x8fce33
     });
@@ -122,8 +118,8 @@ function createPlatforms(
         { kind: 'floating', x: 10560, y: groundY - 190, tiles: 2 },
 
         { kind: 'ground', x: 11136, y: groundY - 128, tiles: 7 },
-        { kind: 'ground', x: 12480, y: groundY, tiles: 12 },
-        { kind: 'floating', x: 14016, y: groundY - 260, tiles: 3 }
+        { kind: 'ground', x: 12480, y: groundY, tiles: 3 },
+        { kind: 'ground', x: 13504, y: groundY, tiles: 5 }
     ];
 
     for (const platform of platformLayout)
@@ -217,7 +213,6 @@ function createDecorations(scene: Scene, groundY: number)
     const floorY = surfaceY(groundY);
     const highFloorY = surfaceY(groundY - 128);
     const floatingLowY = surfaceY(groundY - 190);
-    const floatingMidY = surfaceY(groundY - 260);
     const floatingHighY = surfaceY(groundY - 330);
 
     const decorations: DecorationSpec[] = [
@@ -259,15 +254,7 @@ function createDecorations(scene: Scene, groundY: number)
 
         { x: 11280, y: highFloorY, texture: 'tree-1', scale: 1.4 },
         { x: 11520, y: highFloorY, texture: 'tree-2', scale: 1.15, flipX: true },
-        { x: 11830, y: highFloorY, texture: 'bush-4', scale: 1.25 },
-
-        { x: 12640, y: floorY, texture: 'tree-3', scale: 1.35 },
-        { x: 12920, y: floorY, texture: 'bush-1', scale: 1.35 },
-        { x: 13220, y: floorY, texture: 'tree-1', scale: 1.3, flipX: true },
-        { x: 13620, y: floorY, texture: 'stone', scale: 1 },
-
-        { x: 14020, y: floatingMidY, texture: 'crate', scale: 0.75 },
-        { x: 14240, y: floatingMidY, texture: 'mushroom-2', scale: 0.85 }
+        { x: 11830, y: highFloorY, texture: 'bush-4', scale: 1.25 }
     ];
 
     for (const decoration of decorations)
@@ -276,7 +263,6 @@ function createDecorations(scene: Scene, groundY: number)
     }
 
     addCrateStack(scene, 5700, floorY);
-    addCrateStack(scene, 12850, floorY);
 }
 
 function surfaceY(platformY: number)
