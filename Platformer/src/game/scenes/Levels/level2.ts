@@ -57,7 +57,6 @@ const WALL_PANEL_PATTERN = [
 
 export function createLevel2(scene: Scene)
 {
-    const width = scene.scale.width;
     const height = scene.scale.height;
     const worldWidth = 14500;
     const worldHeight = height * 2;
@@ -393,7 +392,7 @@ function createDecorations(scene: Scene, groundY: number)
     addDoor(scene, 2624, surfaceY(groundY - 190), 'level2-door-locked');
     addDoor(scene, 4928, surfaceY(groundY - 300), 'level2-door-locked');
     addDoor(scene, 7424, surfaceY(groundY - 340), 'level2-door-locked');
-    addWallPanel(scene, 10880, surfaceY(groundY - 180), 'level2-bg-3');
+    addDoor(scene, 10880, surfaceY(groundY - 180), 'level2-door-locked');
 }
 
 function createFence(scene: Scene, startX: number, floorY: number, parts: number)
@@ -408,14 +407,6 @@ function createFence(scene: Scene, startX: number, floorY: number, parts: number
             .setDepth(DECORATION_DEPTH)
             .setAlpha(0.9);
     }
-}
-
-function addWallPanel(scene: Scene, x: number, y: number, texture: string)
-{
-    scene.add.image(x, y, texture)
-        .setOrigin(0.5, 1)
-        .setDisplaySize(TILE_SIZE, TILE_SIZE)
-        .setDepth(DECORATION_DEPTH);
 }
 
 function addDoor(scene: Scene, x: number, y: number, texture: string)

@@ -46,6 +46,7 @@
         "levelMenu": "关卡菜单"
     },
     "options": {
+        "unlockAllLevels": "Unlock Levels",
         "title": "选项",
         "fullscreen": "全屏",
         "hitboxes": "碰撞箱",

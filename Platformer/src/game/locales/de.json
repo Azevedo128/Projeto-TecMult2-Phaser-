@@ -40,7 +40,6 @@
     },
     "levelComplete": {
         "title": "Level Abgeschlossen",
-        "subtitle": "Du hast dieses Level geschafft. Was moechtest du tun?",
         "retry": "Nochmal Versuchen",
         "next": "Naechstes Level",
         "levelMenu": "Level Menu"
@@ -50,6 +49,7 @@
         "fullscreen": "Vollbild",
         "hitboxes": "Hitboxes",
         "deathAnimation": "Todesanimation",
+        "unlockAllLevels": "Levels Freischalten",
         "volume": "Lautstärke: {{volume}}%",
         "languageBar": "Sprache: {{language}}",
         "languageTitle": "SPRACHE",

@@ -40,7 +40,6 @@
     },
     "levelComplete": {
         "title": "Level Complete",
-        "subtitle": "You cleared this level. What do you want to do?",
         "retry": "Try Again",
         "next": "Next Level",
         "levelMenu": "Level Menu"
@@ -50,6 +49,7 @@
         "fullscreen": "Fullscreen",
         "hitboxes": "Hitboxes",
         "deathAnimation": "Death Animation",
+        "unlockAllLevels": "Unlock Levels",
         "volume": "Volume: {{volume}}%",
         "languageBar": "Language: {{language}}",
         "languageTitle": "LANGUAGE",

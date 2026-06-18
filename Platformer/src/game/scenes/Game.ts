@@ -53,7 +53,7 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
         this.camera.setZoom(0.8);
-        this.camera.setBackgroundColor(0x00ff00);
+        this.camera.setBackgroundColor(0xd8f4fa);
         this.isPlayerDying = false;
         this.isLevelComplete = false;
         this.platformCollider = undefined;

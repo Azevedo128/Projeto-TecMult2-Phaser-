@@ -36,11 +36,8 @@ export class Preloader extends Scene
         this.load.setPath('assets');
 
         this.load.image('heart-full', 'ui/hearts/heart-full-single.png');
-        this.load.image('heart-half', 'ui/hearts/half/h1.png');
         this.load.image('heart-empty', 'ui/hearts/heart-empty-single.png');
 
-        this.load.image('ground-tile', 'tilesets/freetileset/Tiles/1.png');
-        this.load.image('ground-tile-2', 'tilesets/freetileset/Tiles/2.png');
         this.load.image('crate', 'tilesets/freetileset/Object/Crate.png');
         this.load.image('tree-1', 'tilesets/freetileset/Object/Tree_1.png');
         this.load.image('tree-2', 'tilesets/freetileset/Object/Tree_2.png');
@@ -61,9 +58,6 @@ export class Preloader extends Scene
         this.load.image('dirt-left', 'tilesets/freetileset/Tiles/4.png');
         this.load.image('dirt-middle', 'tilesets/freetileset/Tiles/5.png');
         this.load.image('dirt-right', 'tilesets/freetileset/Tiles/6.png');
-        this.load.image('dirt-bottom-left', 'tilesets/freetileset/Tiles/8.png');
-        this.load.image('dirt-bottom-middle', 'tilesets/freetileset/Tiles/9.png');
-        this.load.image('dirt-bottom-right', 'tilesets/freetileset/Tiles/10.png');
         this.load.image('floating-ground-left', 'tilesets/freetileset/Tiles/13.png');
         this.load.image('floating-ground-middle', 'tilesets/freetileset/Tiles/14.png');
         this.load.image('floating-ground-right', 'tilesets/freetileset/Tiles/15.png');

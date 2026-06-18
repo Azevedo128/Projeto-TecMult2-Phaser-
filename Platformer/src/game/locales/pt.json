@@ -40,7 +40,6 @@
     },
     "levelComplete": {
         "title": "Nivel Completo",
-        "subtitle": "Passaste este nivel. O que queres fazer?",
         "retry": "Tentar Outra Vez",
         "next": "Proximo Nivel",
         "levelMenu": "Menu de Niveis"
@@ -50,6 +49,7 @@
         "fullscreen": "Ecrã Inteiro",
         "hitboxes": "Hitboxes",
         "deathAnimation": "Animação Morte",
+        "unlockAllLevels": "Desbloquear Niveis",
         "volume": "Volume: {{volume}}%",
         "languageBar": "Língua: {{language}}",
         "languageTitle": "LÍNGUA",

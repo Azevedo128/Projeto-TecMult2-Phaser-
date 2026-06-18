@@ -41,6 +41,8 @@ const legacyLanguageIds: Record<string, LanguageId> = {
     Chines: 'zh'
 };
 
+const LANGUAGE_STORAGE_KEY = 'selectedLanguage';
+
 export function getCurrentLanguage(scene: Scene): LanguageId
 {
     const storedLanguage = scene.registry.get('selectedLanguage');
@@ -57,9 +59,18 @@ export function getCurrentLanguage(scene: Scene): LanguageId
         if (migratedLanguage)
         {
             scene.registry.set('selectedLanguage', migratedLanguage);
+            saveLanguage(migratedLanguage);
 
             return migratedLanguage;
         }
+    }
+
+    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+
+    if (savedLanguage && isLanguageId(savedLanguage))
+    {
+        scene.registry.set('selectedLanguage', savedLanguage);
+        return savedLanguage;
     }
 
     return DEFAULT_LANGUAGE;
@@ -68,6 +79,7 @@ export function getCurrentLanguage(scene: Scene): LanguageId
 export function setCurrentLanguage(scene: Scene, language: LanguageId)
 {
     scene.registry.set('selectedLanguage', language);
+    saveLanguage(language);
 }
 
 export function getLanguageName(scene: Scene, language: LanguageId)
@@ -86,6 +98,11 @@ export function translate(scene: Scene, key: string, replacements: Replacements 
 function isLanguageId(value: string): value is LanguageId
 {
     return value in dictionaries;
+}
+
+function saveLanguage(language: LanguageId)
+{
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
 }
 
 function getDictionaryText(dictionary: Dictionary, key: string)

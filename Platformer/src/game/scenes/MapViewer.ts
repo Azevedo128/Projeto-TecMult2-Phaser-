@@ -7,8 +7,10 @@ import { restartSceneOnResize } from './ResizeRestart';
 import { translate as t } from '../i18n';
 import { playUiClick, playUiHover } from './UiSounds';
 
-const DEFAULT_MAP_ZOOM = 0.8;
-const MIN_MAP_ZOOM = 0.14;
+const MAP_VIEW_PADDING_X = 90;
+const MAP_VIEW_PADDING_Y = 160;
+const MAP_WORLD_EDGE_PADDING = 700;
+const MIN_MAP_ZOOM = 0.05;
 const MAX_MAP_ZOOM = 1.45;
 const ZOOM_STEP = 1.12;
 
@@ -51,10 +53,10 @@ export class MapViewer extends Scene
         const level = this.createSelectedLevel();
 
         this.mapObjects = [...this.children.list];
-        this.worldWidth = level.worldWidth;
+        this.worldWidth = level.worldWidth + MAP_WORLD_EDGE_PADDING;
         this.worldHeight = level.worldHeight;
         this.previewUpdate = level.update;
-        this.fitCameraToMap(level.worldWidth, level.worldHeight);
+        this.fitCameraToMap(this.worldWidth, this.worldHeight);
         this.createUi();
         this.createUiCamera();
         this.createMapDrag();
@@ -101,11 +103,14 @@ export class MapViewer extends Scene
     {
         const camera = this.cameras.main;
 
-        this.mapZoom = DEFAULT_MAP_ZOOM;
+        const zoomX = (this.scale.width - MAP_VIEW_PADDING_X * 2) / worldWidth;
+        const zoomY = (this.scale.height - MAP_VIEW_PADDING_Y * 2) / worldHeight;
+
+        this.mapZoom = Phaser.Math.Clamp(Math.min(zoomX, zoomY), MIN_MAP_ZOOM, MAX_MAP_ZOOM);
 
         camera.setBounds(0, 0, worldWidth, worldHeight);
         camera.setZoom(this.mapZoom);
-        camera.setScroll(0, this.getMaxScrollY());
+        camera.centerOn(worldWidth / 2, worldHeight / 2);
     }
 
     private createUi()

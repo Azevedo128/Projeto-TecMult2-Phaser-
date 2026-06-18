@@ -45,19 +45,15 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
 
         const buttonY = height * 0.62;
-        const spacing = 170;
+        const spacing = 100;
 
         this.createMenuButton(width / 2 - spacing, buttonY, 'menu-play', 'menu-play-hover', t(this, 'main.play'), () => {
             this.scene.start('CharacterMenu');
         });
 
-        this.createMenuButton(width / 2, buttonY, 'menu-settings', 'menu-settings-hover', t(this, 'main.options'), () => {
+        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-settings', 'menu-settings-hover', t(this, 'main.options'), () => {
             this.scene.launch('OptionsOverlay', { returnScene: 'MainMenu' });
             this.scene.bringToTop('OptionsOverlay');
-        });
-
-        this.createMenuButton(width / 2 + spacing, buttonY, 'menu-exit', 'menu-exit-hover', t(this, 'main.exit'), () => {
-            this.closeCurrentPage();
         });
     }
 
@@ -95,18 +91,6 @@ export class MainMenu extends Scene
         button.on('pointerdown', () => {
             playUiClick(this);
             onClick();
-        });
-    }
-
-    closeCurrentPage()
-    {
-        window.close();
-
-        this.time.delayedCall(250, () => {
-            if (!window.closed)
-            {
-                window.location.replace('about:blank');
-            }
         });
     }
 }

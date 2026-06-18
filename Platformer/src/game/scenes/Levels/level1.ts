@@ -3,7 +3,6 @@ import { createFinishLine } from './finishLine';
 
 const TILE_SIZE = 128;
 const BACKGROUND_DEPTH = -30;
-const WATER_DEPTH = -25;
 const DECORATION_DEPTH = -10;
 const PLATFORM_DEPTH = 0;
 const CRATE_SCALE = 0.85;
@@ -36,7 +35,6 @@ export function createLevel1(scene: Scene)
     scene.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
 
     createBackground(scene, width, worldWidth, worldHeight);
-    createWater(scene, worldWidth, groundY);
 
     const platforms = scene.physics.add.staticGroup();
     const finish = scene.physics.add.staticGroup();
@@ -65,28 +63,14 @@ function createBackground(
     worldHeight: number
 )
 {
+    scene.cameras.main.setBackgroundColor(0xd8f4fa);
+
     for (let x = screenWidth / 2; x < worldWidth; x += screenWidth)
     {
         scene.add.image(x, worldHeight / 2, 'map-bg')
             .setDisplaySize(screenWidth, worldHeight)
             .setAlpha(1)
             .setDepth(BACKGROUND_DEPTH);
-    }
-}
-
-function createWater(scene: Scene, worldWidth: number, groundY: number)
-{
-    const waterTop = groundY + 210;
-
-    scene.add.rectangle(worldWidth / 2, waterTop + 110, worldWidth, 220, 0x2fa8ff)
-        .setDepth(WATER_DEPTH)
-        .setAlpha(0.9);
-
-    for (let x = 64; x < worldWidth; x += 128)
-    {
-        scene.add.ellipse(x, waterTop, 120, 34, 0x79d8ff)
-            .setDepth(WATER_DEPTH + 1)
-            .setAlpha(0.55);
     }
 }
 

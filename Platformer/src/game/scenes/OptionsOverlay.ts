@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { getSavedVolume, setSavedVolume } from './AudioManager';
+import { getUnlockAllLevels, setUnlockAllLevels } from './LevelProgress';
 import { restartSceneOnResize } from './ResizeRestart';
 import {
     getCurrentLanguage,
@@ -26,6 +27,8 @@ export class OptionsOverlay extends Scene
     hitboxesCheck!: GameObjects.Text;
     deathAnimationLabel!: GameObjects.Text;
     deathAnimationCheck!: GameObjects.Text;
+    unlockAllLevelsLabel!: GameObjects.Text;
+    unlockAllLevelsCheck!: GameObjects.Text;
     volumeLabel!: GameObjects.Text;
     volumeFill!: GameObjects.Rectangle;
     volumeHandle!: GameObjects.Rectangle;
@@ -66,10 +69,10 @@ export class OptionsOverlay extends Scene
         }).setOrigin(0.5);
 
         const optionY = height / 2 - 145;
-        const spacing = 220;
+        const spacing = 170;
 
         const fullscreenOption = this.createCheckboxOption(
-            width / 2 - spacing,
+            width / 2 - spacing * 1.5,
             optionY,
             this.getFullscreenText(),
             this.scale.isFullscreen,
@@ -79,7 +82,7 @@ export class OptionsOverlay extends Scene
         this.fullscreenCheck = fullscreenOption.check;
 
         const deathAnimationOption = this.createCheckboxOption(
-            width / 2,
+            width / 2 - spacing * 0.5,
             optionY,
             this.getDeathAnimationText(),
             this.getDeathAnimationEnabled(),
@@ -89,7 +92,7 @@ export class OptionsOverlay extends Scene
         this.deathAnimationCheck = deathAnimationOption.check;
 
         const hitboxesOption = this.createCheckboxOption(
-            width / 2 + spacing,
+            width / 2 + spacing * 0.5,
             optionY,
             this.getHitboxesText(),
             this.getHitboxesEnabled(),
@@ -97,6 +100,16 @@ export class OptionsOverlay extends Scene
         );
         this.hitboxesLabel = hitboxesOption.label;
         this.hitboxesCheck = hitboxesOption.check;
+
+        const unlockAllLevelsOption = this.createCheckboxOption(
+            width / 2 + spacing * 1.5,
+            optionY,
+            this.getUnlockAllLevelsText(),
+            this.getUnlockAllLevelsEnabled(),
+            () => this.toggleUnlockAllLevels()
+        );
+        this.unlockAllLevelsLabel = unlockAllLevelsOption.label;
+        this.unlockAllLevelsCheck = unlockAllLevelsOption.check;
 
         this.createVolumeSlider(width / 2, height / 2 + 10, 560);
         this.createLanguageSelector(width / 2, height / 2 + 125, 560);
@@ -360,6 +373,7 @@ export class OptionsOverlay extends Scene
         this.fullscreenLabel.setText(this.getFullscreenText());
         this.hitboxesLabel.setText(this.getHitboxesText());
         this.deathAnimationLabel.setText(this.getDeathAnimationText());
+        this.unlockAllLevelsLabel.setText(this.getUnlockAllLevelsText());
         this.volumeLabel.setText(this.getVolumeText());
         this.languageLabel.setText(this.getLanguageText());
         this.backButtonLabel.setText(t(this, 'common.back'));
@@ -612,6 +626,12 @@ export class OptionsOverlay extends Scene
         this.updateDeathAnimationOption();
     }
 
+    private toggleUnlockAllLevels()
+    {
+        setUnlockAllLevels(this, !this.getUnlockAllLevelsEnabled());
+        this.updateUnlockAllLevelsOption();
+    }
+
     private updateFullscreenOption()
     {
         this.fullscreenLabel.setText(this.getFullscreenText());
@@ -628,6 +648,12 @@ export class OptionsOverlay extends Scene
     {
         this.deathAnimationLabel.setText(this.getDeathAnimationText());
         this.setCheckboxValue(this.deathAnimationCheck, this.getDeathAnimationEnabled());
+    }
+
+    private updateUnlockAllLevelsOption()
+    {
+        this.unlockAllLevelsLabel.setText(this.getUnlockAllLevelsText());
+        this.setCheckboxValue(this.unlockAllLevelsCheck, this.getUnlockAllLevelsEnabled());
     }
 
     private setCheckboxValue(check: GameObjects.Text, checked: boolean)
@@ -685,6 +711,11 @@ export class OptionsOverlay extends Scene
         return t(this, 'options.deathAnimation');
     }
 
+    private getUnlockAllLevelsText()
+    {
+        return t(this, 'options.unlockAllLevels');
+    }
+
     private getVolumeText()
     {
         return t(this, 'options.volume', { volume: getSavedVolume(this) });
@@ -707,6 +738,11 @@ export class OptionsOverlay extends Scene
         const value = this.registry.get('deathAnimationEnabled');
 
         return typeof value === 'boolean' ? value : true;
+    }
+
+    private getUnlockAllLevelsEnabled()
+    {
+        return getUnlockAllLevels(this);
     }
 
     private getSelectedLanguage()

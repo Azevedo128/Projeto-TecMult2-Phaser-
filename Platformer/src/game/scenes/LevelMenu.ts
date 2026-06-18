@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import { stopLevelMusic } from './AudioManager';
+import { isLevelUnlocked } from './LevelProgress';
 import { restartSceneOnResize } from './ResizeRestart';
 import { translate as t } from '../i18n';
 import { playUiClick, playUiHover } from './UiSounds';
@@ -50,18 +51,21 @@ export class LevelMenu extends Scene
 
         const levelY = height * 0.52;
         const spacing = 210;
+        const level1Unlocked = isLevelUnlocked(this, 1);
+        const level2Unlocked = isLevelUnlocked(this, 2);
+        const level3Unlocked = isLevelUnlocked(this, 3);
 
-        this.createLevelButton(width / 2 - spacing, levelY, t(this, 'levels.level1'), 'menu-play', 'menu-play-hover', true, () => {
+        this.createLevelButton(width / 2 - spacing, levelY, t(this, 'levels.level1'), level1Unlocked ? 'menu-play' : 'menu-locked', 'menu-play-hover', level1Unlocked, () => {
             this.registry.set('selectedLevel', 1);
             this.scene.start('Game');
         });
 
-        this.createLevelButton(width / 2, levelY, t(this, 'levels.level2'), 'menu-play', 'menu-play-hover', true, () => {
+        this.createLevelButton(width / 2, levelY, t(this, 'levels.level2'), level2Unlocked ? 'menu-play' : 'menu-locked', 'menu-play-hover', level2Unlocked, () => {
             this.registry.set('selectedLevel', 2);
             this.scene.start('Game');
         });
 
-        this.createLevelButton(width / 2 + spacing, levelY, t(this, 'levels.level3'), 'menu-play', 'menu-play-hover', true, () => {
+        this.createLevelButton(width / 2 + spacing, levelY, t(this, 'levels.level3'), level3Unlocked ? 'menu-play' : 'menu-locked', 'menu-play-hover', level3Unlocked, () => {
             this.registry.set('selectedLevel', 3);
             this.scene.start('Game');
         });
