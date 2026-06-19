@@ -218,17 +218,6 @@ Platformer/
 - Sistema de som
 - Animacoes de sprites
 
-## Estado da Entrega
-
-Versao entregue: `1.0`
-
-Tag esperada no GitHub:
-
-```bash
-git tag 1.0
-git push origin 1.0
-```
-
 ## Observacoes
 
 O jogo deve ser executado atraves de servidor local, nao diretamente por `file://`.
